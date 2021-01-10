@@ -1,0 +1,9 @@
+# Confidential settings file
+.htaccess
+
+# logfile
+logs/*
+
+# IDE config file
+./workspace.code-workspace
+./.idea/

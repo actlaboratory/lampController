@@ -1,0 +1,21 @@
+{% set page_title = "Hello World!" %}
+{% set page_description = "トップページです。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+	<p> ようこそslimフレームワークの世界へ！</p>
+	<p> さああなたもslimを使ってウェブアプリの開発を始めましょう！</p>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
