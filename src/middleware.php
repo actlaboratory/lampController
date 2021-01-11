@@ -2,8 +2,10 @@
 // Application middleware
 // e.g: $app->add(new \Slim\Csrf\Guard);
 
+use Util\ApiUtil;
 
 $app->add(new DataBaseTransactionHandler($app->getContainer()));
+$app->add(new ApiJsonHandler($app->getContainer()));
 
 class DataBaseTransactionHandler{
 
@@ -22,6 +24,29 @@ class DataBaseTransactionHandler{
 		$this->container->get("db")->commit();
 		$this->container->get("logger")->info("DB: commit transaction");
 		return $response;
+	}
+
+}
+
+class ApiJsonHandler{
+
+	private $container;
+
+	public function __construct($container) {
+		$this->container = $container;
+	}
+
+	//api用jsonの検証
+	public function __invoke($request, $response, $next){
+		$path = explode("/",$request->getUri()->getPath());
+		if(!ApiUtil::apiVersionCheck($path, $request)){
+			return ApiUtil::responseErrorJson($response, 200, "different version");
+		}
+		if(ApiUtil::apiSoftwareCheck($request, $this->container->get("db"))){
+			return $response = $next($request, $response);
+		} else{
+			return ApiUtil::responseErrorJson($response, 200, "software is incorrect");
+		}
 	}
 }
 

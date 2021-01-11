@@ -6,6 +6,6 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Query\QueryBuilder;
 use PDO;
 
-class Sample extends Dao{
+class File extends Dao{
 
 }
