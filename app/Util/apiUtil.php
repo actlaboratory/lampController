@@ -14,11 +14,18 @@ class ApiUtil{
 		return $response->withHeader('Content-Type', 'application/json');
 	}
 
+	// 成功をレスポンス
+	static function responseSuccessJson($response){
+		$data = ["code"=>400, "status"=>"success"];
+		$response->getBody()->write(json_encode($data));
+		return $response->withHeader('Content-Type', 'application/json');
+	}
+
 	// apiバージョンが正しいか確認
 	static function apiVersionCheck($path, $request){
 		if ($path[1]==="api" && $path[2]==="v1"){
 			$data = json_decode($request->getBody(), TRUE);
-			if ($data["apiVersion"]==1){
+			if (!empty($data["apiVersion"]) && $data["apiVersion"]==1){
 				return TRUE;
 			}
 		}
@@ -27,8 +34,12 @@ class ApiUtil{
 
 	static function apiSoftwareCheck($request, $db){
 		$data = json_decode($request->getBody(), TRUE);
-		$driveSerial = $data["software"]["driveSerialNo"];
-		$pcName = $data["software"]["pcName"];
+		if (!empty($data["software"]["driveSerialNo"]) && !empty($data["software"]["pcName"])){
+			$driveSerial = $data["software"]["driveSerialNo"];
+			$pcName = $data["software"]["pcName"];
+		} else{
+			return FALSE;
+		}
 		$sTable = new Software($db);
 		$info = $sTable->select(["drive_serial_no"=>$driveSerial, "pc_name"=>$pcName]);
 		if ($info===false){

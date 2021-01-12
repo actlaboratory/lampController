@@ -39,6 +39,12 @@ class ApiJsonHandler{
 	//api用jsonの検証
 	public function __invoke($request, $response, $next){
 		$path = explode("/",$request->getUri()->getPath());
+		if (empty($data[1]) || !$path[1]==="api"){
+			return $response = $next($request, $response);
+		}
+		if (strpos($request->getHeaderLine("Content-Type"), "application/json")===FALSE){
+			return ApiUtil::responseErrorJson($response, 200, "not json");
+		}
 		if(!ApiUtil::apiVersionCheck($path, $request)){
 			return ApiUtil::responseErrorJson($response, 200, "different version");
 		}

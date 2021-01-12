@@ -5,6 +5,7 @@ use Slim\Http\Response;
 use Model\Dao\User;
 use Model\Dao\Directory;
 use Model\Dao\File;
+use Util\ApiUtil;
 
 // キーとファイル階層のJSONを受け取る
 $app->post("/api/v1/putfile", function (request $request, Response $response){
@@ -15,7 +16,12 @@ $app->post("/api/v1/putfile", function (request $request, Response $response){
 // JSONの検証とデータベース登録呼び出し
 function json2arrayAndCallFileDatabaseFunction($db, $request, $response){
     $data = json_decode($request->getBody(), TRUE);
-    $fileArray = $data["file"];
+    if (!empty($data["file"])){
+        $fileArray = $data["file"];
+        ApiUtil::responseSuccessJson($response);
+    } else{
+        return ApiUtil::responseErrorJson($response, 200, "invalid json");
+    }
     $dirTable = new Directory($db);
     $fileTable = new File($db);
     array2fileDatabase($fileArray, $dirTable, $fileTable, NULL);
