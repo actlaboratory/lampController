@@ -16,7 +16,7 @@ class ApiUtil{
 
 	// 成功をレスポンス
 	static function responseSuccessJson($response){
-		$data = ["code"=>400, "status"=>"success"];
+		$data = ["code"=>200, "status"=>"success"];
 		$response->getBody()->write(json_encode($data));
 		return $response->withHeader('Content-Type', 'application/json');
 	}

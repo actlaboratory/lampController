@@ -20,7 +20,7 @@ function json2arrayAndCallFileDatabaseFunction($db, $request, $response){
         $fileArray = $data["file"];
         ApiUtil::responseSuccessJson($response);
     } else{
-        return ApiUtil::responseErrorJson($response, 200, "invalid json");
+        return ApiUtil::responseErrorJson($response, 400, "invalid json");
     }
     $dirTable = new Directory($db);
     $fileTable = new File($db);

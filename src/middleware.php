@@ -43,15 +43,18 @@ class ApiJsonHandler{
 			return $response = $next($request, $response);
 		}
 		if (strpos($request->getHeaderLine("Content-Type"), "application/json")===FALSE){
-			return ApiUtil::responseErrorJson($response, 200, "not json");
+			return ApiUtil::responseErrorJson($response, 400, "not json");
 		}
 		if(!ApiUtil::apiVersionCheck($path, $request)){
-			return ApiUtil::responseErrorJson($response, 200, "different version");
+			return ApiUtil::responseErrorJson($response, 400, "different version");
+		}
+		if (!empty($path[3]) && $path[3]==="entry"){
+			return $response = $next($request, $response);
 		}
 		if(ApiUtil::apiSoftwareCheck($request, $this->container->get("db"))){
 			return $response = $next($request, $response);
 		} else{
-			return ApiUtil::responseErrorJson($response, 200, "software is incorrect");
+			return ApiUtil::responseErrorJson($response, 400, "software is incorrect");
 		}
 	}
 }
