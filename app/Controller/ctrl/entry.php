@@ -21,13 +21,13 @@ $app->post("/ctrl/entry", function (request $request, response $response){
     if ($errorMessage!==""){
         return showUserEntryForm($this->view, $response, $inputData, $errorMessage);
     } else{
-        $softwareKey = setUserEntryForm2db($inputData, $db);
+        $softwareKey = setUserEntryForm2db($inputData, $this->db);
         if ($softwareKey===FALSE){ // 失敗したときはやり直し
             return showUserEntryForm($view, $response, $inputData, "登録に失敗しました。もう一度、やり直してください。");
         } else{
             $inputData["softwareKey"] = $softwareKey;
             // Render view
-            return $view->render($response, 'ctrl/entry/success.twig', $inputData);
+            return $this->view->render($response, 'ctrl/entry/success.twig', $inputData);
         }
     }
 });
@@ -72,14 +72,15 @@ function checkUserEntryForm($inputData, $db){
 }
 
 // ユーザ登録の書き込み。発行されたソフトウェアキーを返す
-function setUserEntryFomr2db($inputData, $db){
+function setUserEntryForm2db($inputData, $db){
     $softwareKey = hash('sha256', random_int(PHP_INT_MIN, PHP_INT_MAX));
     $userTable = new User($db);
     $result = $userTable->insert([
         "user_name"=> $inputData["userName"],
         "password_hash"=> password_hash($inputData["password"], PASSWORD_DEFAULT),
-        "displayName"=> $inputData["displayName"],
-        "software_key"=> $softwareKey
+        "display_name"=> $inputData["displayName"],
+        "software_key"=> $softwareKey,
+        "last_updated_at"=> time()
     ]);
     if ($result===FALSE){
         return FALSE;
