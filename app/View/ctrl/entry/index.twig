@@ -1,0 +1,49 @@
+{% set page_title = "ユーザー登録" %}
+{% set page_description = "LAMP Controllerのユーザー登録を行います。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>ユーザー登録</h2>
+    </div>
+
+    {% if errorMessage!=null and errorMessage!="" %}
+        <div class="alert-danger p-3">{{ errorMessage | nl2br}}</div>
+	{% endif %}
+
+
+    <form method="post">
+        <div class="container py-5">
+            <div class="row mb-3">
+                <label class="col-3"> ユーザー名</label>
+                <input class ="col-9" type="text" name="userName" value="{{ userName }}" required>
+            </div>
+            <div class="row mb-3">
+                <label class="col-3">パスワード</label>
+                <input class="col-9" type="password" name="password" required>
+            </div>
+            <div class="row mb-3">
+                <label class="col-3">パスワードの確認</label>
+                <input class="col-9" type="password" name="confirmPassword" required>
+            </div>
+            <div class="row mb-3">
+                <label class="col-3">表示名</label>
+                <input class="col-9" type="text" name="displayName" value="{{ displayName }}" required>
+            </div>
+        </div>
+        <input type="submit" value="登録">
+    </form>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
