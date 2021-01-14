@@ -1,0 +1,49 @@
+{% set page_title = "ユーザー登録完了" %}
+{% set page_description = "LAMP Controllerのユーザー登録が完了しました。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>ユーザー登録完了</h2>
+    </div>
+
+    <div class="h2 text-center">
+        <h3>LAMP Controllerへようこそ！</h3>
+        <p>以下の内容で登録しました。</p>
+    </div>
+
+    <div class="container py-5">
+        <div class="row mb-3">
+            <label class="col-3">ユーザー名</label>
+            <label class="col-9">{{ userName }}</label>
+        </div>
+        <div class="row mb-3">
+            <label class="col-3">表示名</label>
+            <label class="col-9"> {{ displayName }}</label>
+        </div>
+        <div class="row mb-3">
+            <label class="col-3">ソフトウェアキー</label>
+            <label class="col-9"> {{ softwareKey }}</label>
+        </div>
+    </div>
+
+    <p>※ソフトウェアキーは、LAMPがコントローラと通信する場合や、パスワードを忘れた場合などに利用しますので、他人に知られないように十分ご注意ください。<br>
+    また、LAMPがコントローラに登録されたときに自動でダウンロードされます。</p>
+
+    <div class="text-center my-4">
+        <a class="btn btn-success mx-4" role="button" href="{{ get_base_path() }}/">トップページへ</a>
+        <a class="btn btn-success mx-4" role="button" href="{{ get_base_path() }}/ctrl">コントローラーを開く</a>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
