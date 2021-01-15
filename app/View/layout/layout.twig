@@ -6,6 +6,9 @@
 <head prefix="og: http://ogp.me/ns#">
     <meta charset = "utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name = "twitter:card" content = "summary">
     <meta name = "twitter:site" content = "@twitter_account">
@@ -43,7 +46,7 @@
             {% if session.id==NULL %}
                 <a class="btn btn-success" role="button" href="{{ get_base_path() }}/login">ログイン</a>
             {% else %}
-                <a class="btn btn-success" role="button" href="{{ get_base_path() }}/logout">ログアウト</a>
+                <a class="btn btn-success" role="button" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
             {% endif %}
         </div>
     </div>

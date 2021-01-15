@@ -1,0 +1,47 @@
+{% set page_title = "ログイン" %}
+{% set page_description = "LAMP Controllerのログインページです。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>ログイン</h2>
+    </div>
+
+    <div class="h3 text-center">
+        <h3>ユーザー名とパスワードを入力し、ログインボタンを押してください。</h3>
+    </div>
+    
+    {% if errorMessage!=null and errorMessage!="" %}
+        <div class="alert-danger p-3">{{ errorMessage | nl2br}}</div>
+	{% endif %}
+
+
+    <form method="post" autocomplete="off">
+        <div class="container py-5">
+            <div class="row mb-3">
+                <label class="col-3" for="form_userName"> ユーザー名</label>
+                <input class ="col-9" id="form_userName" type="text" name="userName" required autofocus>
+            </div>
+            <div class="row mb-3">
+                <label class="col-3" for="form_password">パスワード</label>
+                <input class="col-9" id="form_password" type="password" name="password" required>
+            </div>
+        </div>
+        <div class="text-center">
+            <input type="submit" class="btn btn-success" value="ログイン">
+        </div>
+    </form>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}

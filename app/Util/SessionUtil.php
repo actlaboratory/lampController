@@ -9,7 +9,7 @@ class SessionUtil{
     const CONFIG_COOKIE_NAME = "LAMP_Controller_config";
     
     // セッション開始
-    static function start($db){
+    static function setSession($db){
         session_start();
 
         // 認証クッキーがあれば自動ログイン
@@ -35,26 +35,7 @@ class SessionUtil{
         return TRUE;
     }
 
-    // ログイン
-    static function login($userName, $password, $db){
-        // ユーザー情報確認
-        $userTable = new User($db);
-        $userData = $userTable->select([
-            "user_name"=> $userName
-        ]);
-        if (empty($userData)){
-            return FALSE;
-        }
-        if (!password_verify($password, $userData["password_hash"])){
-            return FALSE;
-        }
-        $_SESSION["id"] = $userData["id"];
-
-        // クッキーから設定を読み込み
-        setConfigFromCookie();
-    }
-
-    private function setConfigFromCookie(){
+    static function setConfigFromCookie(){
         $cookie = self::getCookie(self::AUTH_COOKIE_NAME);
         if (empty($cookie)){
             return FALSE;
