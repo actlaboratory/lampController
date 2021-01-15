@@ -1,29 +1,33 @@
+{% set site_name = "LAMP Controller" %}
+{% set site_author = "Hiroki Fujii" %}
+
 <!DOCTYPE html>
 <html lang="ja" class="h-100">
 <head prefix="og: http://ogp.me/ns#">
-	<meta charset = "utf-8">
+    <meta charset = "utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name = "twitter:card" content = "summary">
-	<meta name = "twitter:site" content = "@twitter_account">
-	<meta property = "og:url" content = "{{ get_current_url() }}">
-	{% if page_description == "" %}
-	{% set page_description = "このページには説明がありません。" %}
-	{% endif %}
-	<meta name = "description" content = "{{ page_description }}">
-	<meta property = "og:description" content = "{{ page_description }}">
-	<meta property="og:site_name" content="website x">
+    <meta name = "twitter:card" content = "summary">
+    <meta name = "twitter:site" content = "@twitter_account">
+    <meta property = "og:url" content = "{{ get_current_url() }}">
+    {% if page_description == "" %}
+    {% set page_description = "このページには説明がありません。" %}
+    {% endif %}
+    <meta name = "description" content = "{{ page_description }}">
+    <meta property = "og:description" content = "{{ page_description }}">
+    <meta property="og:site_name" content="{{ site_name }}">
 
-	{% if not page_type == "website" or page_type == "product" or page_type == "article" %}
-	{% set page_type = "article" %}
-	{% endif %}
-	{% set page_keywords = page_keywords|merge(["Anonymous", "template", "keywoard"]) %}
-	<meta name="keywords" content = "{{ page_keywords|join(",") }}">
-	<meta property="og:type" content = "{{ page_type }}">
-	<meta property="og:title" content = "{{ page_title }} - Anonymous">
-	<title>{{ page_title }} - Anonymous </title>
-	{% block header_scripts_add %}{% endblock %}
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% if not page_type == "website" or page_type == "product" or page_type == "article" %}
+    {% set page_type = "article" %}
+    {% endif %}
+    {% set page_keywords = page_keywords|merge(["Anonymous", "template", "keywoard"]) %}
+    <meta name="keywords" content = "{{ page_keywords|join(",") }}">
+    <meta property="og:type" content = "{{ page_type }}">
+    <meta name="author" content="{{ site_author }}">
+    <meta property="og:title" content = "{{ page_title }} - {{ site_name }}">
+    <title>{{ page_title }} - {{ site_name }} </title>
+    {% block header_scripts_add %}{% endblock %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     {# font awsomeパッケージを利用します#}
 </head>
 
@@ -31,8 +35,16 @@
 {# サイトタイトル #}
 <div class="container">
     <div class="row">
-        <div class="mr-auto">
-            <h1><a href="{{ get_base_path() }}/">Anonymous</a></h1>
+        <div class="col-8 mr-auto">
+            <h1><a href="{{ get_base_path() }}/">{{ site_name }}</a></h1>
+        </div>
+        {# ログイン/ログアウト #}
+		<div class="col-4 text-right my-auto mx-auto">
+            {% if session.id==NULL %}
+                <a class="btn btn-success" role="button" href="{{ get_base_path() }}/login">ログイン</a>
+            {% else %}
+                <a class="btn btn-success" role="button" href="{{ get_base_path() }}/logout">ログアウト</a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -47,8 +59,8 @@
     <div class="container">
         {% block page_content %}{% endblock %}
     </div>
-	<!-- Chrome系ブラウザが下余白を無視し、ヘッダが本文と重なるので対策 -->
-	<div class="pt-5"></div>
+    <!-- Chrome系ブラウザが下余白を無視し、ヘッダが本文と重なるので対策 -->
+    <div class="pt-5"></div>
 </main>
 
 {# フッタ #}
