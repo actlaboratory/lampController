@@ -24,12 +24,12 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '6c03dd0d221f69b5872f553d7ddbef85fc770e25',
     'name' => 'slim/slim-skeleton',
   ),
   'versions' => 
@@ -387,12 +387,12 @@ private static $installed = array (
     ),
     'slim/slim-skeleton' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '6c03dd0d221f69b5872f553d7ddbef85fc770e25',
     ),
     'slim/twig-view' => 
     array (
@@ -459,12 +459,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.35.3',
-      'version' => '1.35.3.0',
+      'pretty_version' => 'v1.44.2',
+      'version' => '1.44.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b48680b6eb7d16b5025b9bfc4108d86f6b8af86f',
+      'reference' => '138c493c5b8ee7cff3821f80b8896d371366b5fe',
     ),
     'webmozart/assert' => 
     array (

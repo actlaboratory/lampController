@@ -27,20 +27,20 @@
     <form method="post" autocomplete="off">
         <div class="container py-5">
             <div class="row mb-3">
-                <label class="col-3"> ユーザー名</label>
-                <input class ="col-9" type="text" aria-label="ユーザー名" name="userName" value="{{ userName }}" required>
+                <label class="col-3" for="form_userName"> ユーザー名</label>
+                <input class ="col-9" id="form_userName" type="text" name="userName" value="{{ userName }}" required>
             </div>
             <div class="row mb-3">
-                <label class="col-3">パスワード</label>
-                <input class="col-9" type="password" aria-label="パスワード" name="password" required>
+                <label class="col-3" for="form_password">パスワード</label>
+                <input class="col-9" id="form_password" type="password" name="password" required>
             </div>
             <div class="row mb-3">
-                <label class="col-3">パスワードの確認</label>
-                <input class="col-9" type="password" aria-label="パスワードの確認" name="confirmPassword" required>
+                <label class="col-3" for="confirmPaswword">パスワードの確認</label>
+                <input class="col-9" id="form_confirmPassword" type="password" aria-label="パスワードの確認" name="confirmPassword" required>
             </div>
             <div class="row mb-3">
-                <label class="col-3">表示名</label>
-                <input class="col-9" type="text" aria-label="表示名" name="displayName" value="{{ displayName }}" required>
+                <label class="col-3" for="form_displayName">表示名</label>
+                <input class="col-9" id="form_displayName" type="text" name="displayName" value="{{ displayName }}" required>
             </div>
         </div>
         <div class="text-center">
