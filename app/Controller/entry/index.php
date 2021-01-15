@@ -7,12 +7,12 @@ use Model\Dao\User;
 
 use Util\CtrlUtil;
 
-$app->get("/ctrl/entry", function (request $request, response $response){
+$app->get("/entry", function (request $request, response $response){
     // ユーザ登録空フォームを表示
     showUserEntryForm($this->view, $response);
 });
 
-$app->post("/ctrl/entry", function (request $request, response $response){
+$app->post("/entry", function (request $request, response $response){
     $inputData = $request->getParsedBody();
     // ユーザの入力情報をバリデート
     $errorMessage = checkUserEntryForm($inputData, $this->db);
@@ -27,7 +27,7 @@ $app->post("/ctrl/entry", function (request $request, response $response){
         } else{
             $inputData["softwareKey"] = $softwareKey;
             // Render view
-            return $this->view->render($response, 'ctrl/entry/success.twig', $inputData);
+            return $this->view->render($response, 'entry/success.twig', $inputData);
         }
     }
 });
@@ -44,7 +44,7 @@ function showUserEntryForm($view, $response, $previousData="", $errorMessage="")
     $data["errorMessage"] = $errorMessage;
 
     // Render view
-    return $view->render($response, 'ctrl/entry/index.twig', $data);
+    return $view->render($response, 'entry/index.twig', $data);
 }
 
 // ユーザ入力情報のチェック
