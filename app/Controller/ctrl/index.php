@@ -12,6 +12,7 @@ $app->get("/ctrl", function (request $request, response $response){
     $userData = $userTable->select([
         "id"=> $_SESSION["user_id"]
     ]);
+    $json = json_encode(["title"=> htmlspecialchars("</sctipt></html> 2-5")]);
     $data = [
         "userDisplayName"=> $userData["display_name"]
     ];
