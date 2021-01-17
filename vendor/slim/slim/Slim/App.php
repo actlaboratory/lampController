@@ -328,7 +328,8 @@ class App
                 $response = $response->withBody($body);
             } elseif ($outputBuffering === 'append') {
                 // append output buffer content
-                $response->getBody()->write($output);
+				// PHP標準のtrans_sidが動作するよう修正
+                // $response->getBody()->write($output);
             }
         }
 
