@@ -3,9 +3,11 @@
 // e.g: $app->add(new \Slim\Csrf\Guard);
 
 use Util\ApiUtil;
+use Util\SessionUtil;
 
 $app->add(new DataBaseTransactionHandler($app->getContainer()));
 $app->add(new ApiJsonHandler($app->getContainer()));
+$app->add(new siteMainHandler($app->getContainer()));
 
 class DataBaseTransactionHandler{
 
@@ -58,6 +60,33 @@ class ApiJsonHandler{
 		}
 	}
 }
+
+class SiteMainHandler{
+
+	private $container;
+
+	public function __construct($container) {
+		$this->container = $container;
+	}
+
+	//COOKIE等全体に関わる認証
+	public function __invoke($request, $response, $next){
+		$path = explode("/",$request->getUri()->getPath());
+		if (!empty($path[1]) && $path[1]==="login"){
+			return $response = $next($request, $response);
+		}
+		// セッションスタート
+		if (!SessionUtil::setSession($this->container->get("db"))){
+			SessionUtil::unsetSession($this->container->get("db"));
+			if (!empty($path[1]) && $path[1]==="ctrl"){
+				return $response->withRedirect($request->getUri()->getPath());
+			}
+			return $next($request, $response);
+		}
+		return $next($request, $response);
+	}
+}
+
 
 set_error_handler(function(int $errno, string $errstr, string $errfile, int $errline, array $errcontext){
 	$GLOBALS["app"]->getContainer()->get("logger")->error("ERROR lv.".$errno." ".$errstr." at ".$errfile." line:".$errline);
