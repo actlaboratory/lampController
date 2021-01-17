@@ -71,9 +71,19 @@ class SiteMainHandler{
 
 	//COOKIE等全体に関わる認証
 	public function __invoke($request, $response, $next){
+		$path = explode("/",$request->getUri()->getPath());
+		if (!empty($path[1]) && $path[1]==="login"){
+			return $response = $next($request, $response);
+		}
 		// セッションスタート
-		SessionUtil::setSession($this->container->get("db"));
-		return $response = $next($request, $response);
+		if (!SessionUtil::setSession($this->container->get("db"))){
+			SessionUtil::unsetSession($this->container->get("db"));
+			if (!empty($path[1]) && $path[1]==="ctrl"){
+				return $response->withRedirect($request->getUri()->getPath());
+			}
+			return $next($request, $response);
+		}
+		return $next($request, $response);
 	}
 }
 

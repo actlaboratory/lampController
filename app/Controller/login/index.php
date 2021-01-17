@@ -6,13 +6,11 @@ use Model\Dao\User;
 use Util\SessionUtil;
 
 $app->get("/login", function (request $request, response $response){
-    // いったんログアウト
-    $_SESSION = [];
-    SessionUtil::unsetCookie(SessionUtil::AUTH_COOKIE_NAME);
+    // とりあえずセッション没収
+    SessionUtil::unsetSession($this->db);
 
-    
     // ログインフォームを表示
-    showLoginForm($this->view, $response);
+    return showLoginForm($this->view, $response);
 });
 
 $app->post("/login", function (request $request, response $response){
@@ -56,7 +54,8 @@ function loginFromInput($userName, $password, $db){
     if (!password_verify($password, $userData["password_hash"])){
         return FALSE;
     }
-    $_SESSION["id"] = $userData["id"];
+    // ブラウザ長期セッションの開始
+    SessionUtil::newSession($db, $userData["id"]);
 
     // クッキーから設定を読み込み
     SessionUtil::setConfigFromCookie();

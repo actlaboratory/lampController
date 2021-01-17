@@ -6,10 +6,7 @@ use Util\SessionUtil;
 
 $app->get("/ctrl/logout", function (request $request, response $response){
     // ログアウト
-    session_cache_limiter('nocache');
-    session_destroy();
-    $_SESSION = [];
-    SessionUtil::unsetCookie(SessionUtil::AUTH_COOKIE_NAME);
+    SessionUtil::unsetSession($this->db);
 
     // トップページにリダイレクト
     return $response->withRedirect($request->getUri()->getBasePath(). "/");
