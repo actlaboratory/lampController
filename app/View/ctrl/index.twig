@@ -1,0 +1,60 @@
+{% set page_title = "コントローラ" %}
+{% set page_description = "LAMPのコントロールページです。。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="container-fluid my-5">
+        <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
+        <div class="row">
+            {# 情報表示エリア　#}
+            <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-1 order-2 mx-auto bg-body">
+                <h2 class="h2 text-center text-light bg-info my-3 py-2">情報</h2>
+                <div id="fileInformation">
+                    <h3 class="h3">再生中の曲情報がありません。</h3>
+                </div>
+            </div>
+            
+            {# 操作パネルエリア　#}
+            <div class="col-lg-3 col-md-5 col-sm-6 col-12 order-sm-2 order-1 mx-auto">
+                <div class="container mx-3">
+                    <div class="row bg-info justify-content-center my-3">
+                        <h2 class="h2 text-light py-2">切断</h2>
+                    </div>
+                    <div class="row justify-content-center my-1">
+                        <h3 class="h4 mb-1">CONTROLLER</h3>
+                    </div>
+                    <div class="row justify-content-center mt-1 mb-2">
+                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1">再生 / 一時停止</button>
+                    </div>
+                    <div class="row my-2 justify-content-center">
+                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2">前へ</button>
+                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2">次へ</button>
+                    </div>
+                    <div class="row bg-primary justify-content-center mt-3 mb-1" aria-hidden="true">
+                        <span class="text-light py-1">音量</span>
+                    </div>
+                    <div class="row mt-1 mb-2 justify-content-center">
+                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる">DOWN</button>
+                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる">UP</button>
+                    </div>
+                    <div class="row justify-content-center my-2">
+                        <button type="button" id="fileButton" class="col-11 btn btn-dark my-2 mx-1">ファイル一覧を表示</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
