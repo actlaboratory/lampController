@@ -17,8 +17,31 @@
             {# 情報表示エリア　#}
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-1 order-2 mx-auto bg-body">
                 <h2 class="h2 text-center text-light bg-info my-3 py-2">情報</h2>
-                <div id="fileInformation">
-                    <h3 class="h3">再生中の曲情報がありません。</h3>
+                <div class="container-fluid">
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>タイトル</p></div>
+                        <div class="col-flex"><p id="titleInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アーティスト</p></div>
+                        <div class="col-flex"><p id="artistInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アルバム</p></div>
+                        <div class="col-flex"><p id="albumInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アルバムアーティスト</p></div>
+                        <div class="col-flex"><p id="albumArtistInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>時間</p></div>
+                        <div class="col-flex"><p id="timeInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>場所</p></div>
+                        <div class="col-flex"><p id="pathInfo"></p></div>
+                    </div>
                 </div>
             </div>
             
@@ -26,7 +49,7 @@
             <div class="col-lg-3 col-md-5 col-sm-6 col-12 order-sm-2 order-1 mx-auto">
                 <div class="container mx-3">
                     <div class="row bg-info justify-content-center my-3">
-                        <h2 class="h2 text-light py-2">切断</h2>
+                        <h2 id="softwareStatus" class="h2 text-light py-2"></h2>
                     </div>
                     <div class="row justify-content-center my-1">
                         <h3 class="h4 mb-1">CONTROLLER</h3>
@@ -55,12 +78,50 @@
 
 {% autoescape 'js' %}
     <script>
-        function test(){
-            var fileInformation = document.getElementById("fileInformation");
-            var jsonData = JSON.parse("{{ json }}");
-            fileInformation.innerHTML = 
-                "<p>タイトル: " + jsonData.title + "</p>";
-        }
+        {# ビューのリアルタイム更新 #}
+        function refreshView(){
+            {# エレメントを取得 #}
+            var titleInfo = document.getElementById("titleInfo");
+            var artistInfo = document.getElementById("artistInfo");
+            var albumInfo = document.getElementById("albumInfo");
+            var albumArtistInfo = document.getElementById("albumArtistInfo");
+            var timeInfo = document.getElementById("timeInfo");
+            var pathInfo = document.getElementById("pathInfo");
+            var softwareStatus = document.getElementById("softwareStatus")
+            
+            {# JSONを送ってJSONをもらう #}
+            var reqJson = JSON.stringify({
+                "sessionId": "{{ session.id }}",
+                "softwareId": 13
+            });
+            var xhr = new XMLHttpRequest;
+            xhr.onload = function(){
+                var res = xhr.responseText;
+                if (res.length>0){
+                    var jsonData = JSON.parse(res);
+                    titleInfo.innerText = jsonData.title;
+                    artistInfo.innerText = jsonData.artist;
+                    albumInfo.innerText = jsonData.album;
+                    albumArtistInfo.innerText = jsonData.albumArtist;
+                    pathInfo.innerText = jsonData.path;
+                    if (jsonData.status == "playing"){
+                        softwareStatus.innerText = "再生中";
+                    } else if (jsonData.status == "paused"){
+                        softwareStatus.innerText = "一時停止中";
+                    } else if (jsonData.status == "stopped"){
+                        softwareStatus.innerText = "停止中";
+                    } else{
+                        softwareStatus.innerText = "未接続";
+                    }
+                }
+            };
+            xhr.open('post', "{{ get_base_path() }}/ctrl/getstatus", true);    //(1)
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(reqJson);
+        };
+
+        {# 読み込み時に実行 #}
+        window.onload = setInterval(refreshView, 500);
     </script>
 {% endautoescape %}
 

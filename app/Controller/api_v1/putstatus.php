@@ -17,10 +17,11 @@ $app->post("/api/v1/putstatus", function (request $request, Response $response){
     $receiveTable = new Receive($this->db);
     
     // ユーザ認証
-    if (empty($userTable->select([
+    $userData = $userTable->select([
         "user_name"=> $data["authentication"]["userName"],
         "software_key"=> $data["authentication"]["softwareKey"]
-    ]))){
+    ]);
+    if (empty($userData)){
         return ApiUtil::responseErrorJson($response, 400, "user authentication faild");
     }
     $softwareData = $softwareTable->select([
@@ -31,9 +32,16 @@ $app->post("/api/v1/putstatus", function (request $request, Response $response){
         return ApiUtil::responseErrorJson($response, 400, "software authentication faild");
     }
     
+    // 古いデータは削除
+    $receiveTable->delete([
+        "software_id"=> $softwareData["id"],
+        "user_id"=> $userData["id"]
+    ]);
+    
     //レシーブテーブルに登録
     $receiveTable->insert([
         "software_id"=> $softwareData["id"],
+        "user_id"=> $userData["id"],
         "time"=> time(),
         "json"=> json_encode($data)
     ]);
