@@ -61,10 +61,10 @@
                         <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2">前へ</button>
                         <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2">次へ</button>
                     </div>
-                    <div class="row bg-primary justify-content-center mt-3 mb-1" aria-hidden="true">
+                    <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
                         <span class="text-light py-1">音量</span>
                     </div>
-                    <div class="row mt-1 mb-2 justify-content-center">
+                    <div class="row bg-primary mt-0 mb-2 justify-content-center">
                         <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる">DOWN</button>
                         <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる">UP</button>
                     </div>
@@ -99,19 +99,20 @@
                 var res = xhr.responseText;
                 if (res.length>0){
                     var jsonData = JSON.parse(res);
-                    titleInfo.innerText = jsonData.title;
-                    artistInfo.innerText = jsonData.artist;
-                    albumInfo.innerText = jsonData.album;
-                    albumArtistInfo.innerText = jsonData.albumArtist;
-                    pathInfo.innerText = jsonData.path;
+                    setText(titleInfo, jsonData.title);
+                    setText(artistInfo, jsonData.artist);
+                    setText(albumInfo, jsonData.album);
+                    setText(albumArtistInfo, jsonData.albumArtist);
+                    setText(pathInfo, jsonData.path);
+                    setText(timeInfo, `${seconds2string(jsonData.playbackTime)} / ${seconds2string(jsonData.length)}`)
                     if (jsonData.status == "playing"){
-                        softwareStatus.innerText = "再生中";
+                        setText(softwareStatus, "再生中");
                     } else if (jsonData.status == "paused"){
-                        softwareStatus.innerText = "一時停止中";
+                        setText(softwareStatus, "一時停止中");
                     } else if (jsonData.status == "stopped"){
-                        softwareStatus.innerText = "停止中";
+                        setText(softwareStatus, "停止中");
                     } else{
-                        softwareStatus.innerText = "未接続";
+                        setText(softwareStatus, "未接続");
                     }
                 }
             };
@@ -119,6 +120,23 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(reqJson);
         };
+
+        function setText(element, text){
+            if (element.innerText != text){
+                element.innerText = text;
+            }
+        }
+
+        function seconds2string(sec){
+            if (sec < 0){
+                return 0;
+            }
+            sec = Math.floor(sec);
+            var hours = Math.floor(sec / 360);
+            var minutes = Math.floor((sec % 360) / 60);
+            var seconds = sec % 60;
+            return `${hours}:${("00" + minutes).slice(-2)}:${("00" + seconds).slice(-2)}`
+        }
 
         {# 読み込み時に実行 #}
         window.onload = setInterval(refreshView, 500);

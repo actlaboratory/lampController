@@ -39,7 +39,7 @@ $app->post("/ctrl/getstatus", function (request $request, response $response){
         "album"=> htmlspecialchars($dataStatus["fileAlbum"]),
         "albumArtist"=> htmlspecialchars($dataStatus["fileAlbumArtist"]),
         "artist"=> htmlspecialchars($dataStatus["fileArtist"]),
-        "progressTime"=> $dataStatus["playbackTime"],
+        "playbackTime"=> $dataStatus["playbackTime"],
         "time"=> $receiveData["time"],
         "length"=> $dataStatus["fileLength"],
         "status"=> htmlspecialchars($dataStatus["playbackStatus"])
@@ -54,7 +54,7 @@ function receiveDisconnectJson($response){
         "album"=> "",
         "albumArtist"=> "",
         "artist"=> "",
-        "progressTime"=> 0,
+        "playbackTime"=> 0,
         "time"=> 0,
         "length"=> 0,
         "status"=> "disconnected"
