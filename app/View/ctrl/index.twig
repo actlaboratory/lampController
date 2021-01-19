@@ -55,18 +55,18 @@
                         <h3 class="h4 mb-1">CONTROLLER</h3>
                     </div>
                     <div class="row justify-content-center mt-1 mb-2">
-                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1" onclick="test();">再生 / 一時停止</button>
+                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1" onclick="operation('play');">再生 / 一時停止</button>
                     </div>
                     <div class="row my-2 justify-content-center">
-                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2">前へ</button>
-                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2">次へ</button>
+                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2" onclick="operation('previous');">前へ</button>
+                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2" onclick="operation('next');">次へ</button>
                     </div>
                     <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
                         <span class="text-light py-1">音量</span>
                     </div>
                     <div class="row bg-primary mt-0 mb-2 justify-content-center">
-                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる">DOWN</button>
-                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる">UP</button>
+                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる" onclick="operation('volumeDown');">DOWN</button>
+                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
                     </div>
                     <div class="row justify-content-center my-2">
                         <button type="button" id="fileButton" class="col-11 btn btn-dark my-2 mx-1">ファイル一覧を表示</button>
@@ -78,6 +78,10 @@
 
 {% autoescape 'js' %}
     <script>
+        var basePath = "{{ get_base_path() }}";
+        var sessionId = "{{ session.id }}";
+        var softwareId = 13;
+        
         {# ビューのリアルタイム更新 #}
         function refreshView(){
             {# エレメントを取得 #}
@@ -141,6 +145,8 @@
         {# 読み込み時に実行 #}
         window.onload = setInterval(refreshView, 500);
     </script>
+
+    <script src="./scripts/operation.js"></script>
 {% endautoescape %}
 
 

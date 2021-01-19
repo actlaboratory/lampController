@@ -2,19 +2,22 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Model\Dao\User;
 use Model\Dao\Software;
 use Model\Dao\Receive;
+use Model\Dao\Send_queue;
 use Util\ApiUtil;
 
 // キーとファイル階層のJSONを受け取る
-$app->post("/api/v1/putstatus", function (request $request, Response $response){
+$app->post("/api/v1/comunication", function (request $request, Response $response){
     $data = json_decode($request->getBody(), TRUE);
 
     // データベースオブジェクト
     $userTable = new User($this->db);
     $softwareTable = new Software($this->db);
     $receiveTable = new Receive($this->db);
+    $sendTable = new Send_queue($this->db);
     
     // ユーザ認証
     $userData = $userTable->select([
@@ -46,6 +49,37 @@ $app->post("/api/v1/putstatus", function (request $request, Response $response){
         "json"=> json_encode($data)
     ]);
 
-    // 成功を返す
-    return ApiUtil::responseSuccessJson($response);
+    // ネット操作情報を取得
+    $queryBuilder = new QueryBuilder($this->db);
+    $queryBuilder
+			->select('*')
+			->from("send_queue");
+    $queryBuilder->andWhere("user_id". " LIKE :user_id");
+    $queryBuilder->setParameter(":user_id", $userData["id"]);
+    $queryBuilder->andWhere("software_id". " LIKE :software_id");
+    $queryBuilder->setParameter(":software_id", $softwareData["id"]);
+    $queryBuilder->andWhere("milli_time > ". (int)((microtime(TRUE) * 1000) - 10000));
+    $queryBuilder->orderBy("milli_time", "DESC");
+    $query = $queryBuilder->execute();
+    $sendData = $query->FetchALL();
+
+    // 送信データ成型
+    $jsonArray = [
+        "apiSecInterval"=> API_SEC_INTERVAL,
+        "code"=> 200,
+        "operation"=> []
+    ];
+    foreach ($sendData as $d){
+        array_push($jsonArray["operation"], json_decode($d["json"], TRUE)["operation"]);
+    }
+
+    // 送信キューをクリーンアップ
+    $sendTable->delete([
+        "user_id"=> $userData["id"],
+        "software_id"=> $softwareData["id"]
+    ]);
+    
+    // JSON返却
+    $response->withHeader("Content-Type", "application/json");
+    return $response->getBody()->write(json_encode($jsonArray));
 });
