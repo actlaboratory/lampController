@@ -16,32 +16,8 @@
         <div class="row">
             {# 情報表示エリア　#}
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-1 order-2 mx-auto bg-body">
-                <h2 class="h2 text-center text-light bg-info my-3 py-2">情報</h2>
-                <div class="container-fluid">
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>タイトル</p></div>
-                        <div class="col-flex"><p id="titleInfo"></p></div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アーティスト</p></div>
-                        <div class="col-flex"><p id="artistInfo"></p></div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アルバム</p></div>
-                        <div class="col-flex"><p id="albumInfo"></p></div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アルバムアーティスト</p></div>
-                        <div class="col-flex"><p id="albumArtistInfo"></p></div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>時間</p></div>
-                        <div class="col-flex"><p id="timeInfo"></p></div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>場所</p></div>
-                        <div class="col-flex"><p id="pathInfo"></p></div>
-                    </div>
+                <h2 class="h2 text-center text-light bg-info my-3 py-2">ファイル</h2>
+                <div class="container-fluid" id="fileList">
                 </div>
             </div>
             
@@ -69,7 +45,7 @@
                         <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
                     </div>
                     <div class="row justify-content-center my-2">
-                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧を表示</a>
+                        <a role="button" class="col-11 btn btn-dark my-2 mx-1" href="{{ get_base_path() }}/ctrl">ファイル一覧を閉じる</a>
                     </div>
                 </div>
             </div>
@@ -85,12 +61,6 @@
         {# ビューのリアルタイム更新 #}
         function refreshView(){
             {# エレメントを取得 #}
-            var titleInfo = document.getElementById("titleInfo");
-            var artistInfo = document.getElementById("artistInfo");
-            var albumInfo = document.getElementById("albumInfo");
-            var albumArtistInfo = document.getElementById("albumArtistInfo");
-            var timeInfo = document.getElementById("timeInfo");
-            var pathInfo = document.getElementById("pathInfo");
             var softwareStatus = document.getElementById("softwareStatus")
             
             {# JSONを送ってJSONをもらう #}
@@ -103,12 +73,6 @@
                 var res = xhr.responseText;
                 if (res.length>0){
                     var jsonData = JSON.parse(res);
-                    setText(titleInfo, jsonData.title);
-                    setText(artistInfo, jsonData.artist);
-                    setText(albumInfo, jsonData.album);
-                    setText(albumArtistInfo, jsonData.albumArtist);
-                    setText(pathInfo, jsonData.path);
-                    setText(timeInfo, `${seconds2string(jsonData.playbackTime)} / ${seconds2string(jsonData.length)}`)
                     if (jsonData.status == "playing"){
                         setText(softwareStatus, "再生中");
                     } else if (jsonData.status == "paused"){
@@ -121,6 +85,42 @@
                 }
             };
             xhr.open('post', "{{ get_base_path() }}/ctrl/getstatus", true);    //(1)
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(reqJson);
+        };
+
+        {# ファイル一覧構成 #}
+        function getFileList(){
+            {# エレメントを取得 #}
+            var fileList = document.getElementById("fileList")
+            
+            {# JSONを送ってJSONをもらう #}
+            var reqJson = JSON.stringify({
+                "sessionId": "{{ session.id }}",
+                "filePath": "{{ filePath }}"
+            });
+            var xhr = new XMLHttpRequest;
+            xhr.onload = function(){
+                var res = xhr.responseText;
+                console.log(res);
+                if (res.length>0){
+                    var jsonData = JSON.parse(res);
+                    
+                    // 書き込み
+                    var fileListString = "";
+                    if (typeof jsonData["directory"] !== 'undefined') {
+                        for (var dir in jsonData["directory"]){
+                            if (location.search === ""){
+                                fileListString += `<p><a href="{{ get_base_path() }}/ctrl/file?f=${jsonData["directory"][dir]}">${jsonData["directory"][dir]}</a></p>`
+                            } else{
+                                fileListString += `<p><a href="{{ get_base_path() }}/ctrl/file${location.search}/${jsonData["directory"][dir]}">${jsonData["directory"][dir]}</a></p>`
+                            }
+                        }
+                    }
+                    fileList.innerHTML = fileListString;
+                }
+            };
+            xhr.open('post', "{{ get_base_path() }}/ctrl/getfilelist", true);    //(1)
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(reqJson);
         };
@@ -143,10 +143,13 @@
         }
 
         {# 読み込み時に実行 #}
-        window.onload = setInterval(refreshView, 500);
+        window.onload = function(){
+            setInterval(refreshView, 500);
+            getFileList();
+        };
     </script>
 
-    <script src="./scripts/operation.js"></script>
+    <script src="../scripts/operation.js"></script>
 {% endautoescape %}
 
 
