@@ -15,7 +15,34 @@
         <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
         <div class="row">
             {# 情報表示エリア　#}
-            <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-1 order-2 mx-auto bg-body">
+            <div class="col-lg-3 col-md-5 col-sm-6 col-12 mx-auto">
+                <div class="container fluid">
+                    <div class="row bg-info justify-content-center my-3">
+                        <h2 id="softwareStatus" class="h2 text-light py-2">読み込み中</h2>
+                    </div>
+                    <div class="row justify-content-center my-1">
+                        <h3 class="h4 mb-1">CONTROLLER</h3>
+                    </div>
+                    <div class="row justify-content-center mt-1 mb-2">
+                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1" onclick="operation('play');">再生 / 一時停止</button>
+                    </div>
+                    <div class="row my-2 justify-content-center">
+                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2" onclick="operation('previous');">前へ</button>
+                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2" onclick="operation('next');">次へ</button>
+                    </div>
+                    <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
+                        <span class="text-light py-1">音量</span>
+                    </div>
+                    <div class="row bg-primary mt-0 mb-2 justify-content-center">
+                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる" onclick="operation('volumeDown');">DOWN</button>
+                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
+                    </div>
+                    <div class="row justify-content-center my-2">
+                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧を表示</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7 col-sm-6 col-12 mx-auto bg-body">
                 <h2 class="h2 text-center text-light bg-info my-3 py-2">情報</h2>
                 <div class="container-fluid">
                     <div class="row mb-1">
@@ -46,33 +73,6 @@
             </div>
             
             {# 操作パネルエリア　#}
-            <div class="col-lg-3 col-md-5 col-sm-6 col-12 order-sm-2 order-1 mx-auto">
-                <div class="container fluid">
-                    <div class="row bg-info justify-content-center my-3">
-                        <h2 id="softwareStatus" class="h2 text-light py-2">読み込み中</h2>
-                    </div>
-                    <div class="row justify-content-center my-1">
-                        <h3 class="h4 mb-1">CONTROLLER</h3>
-                    </div>
-                    <div class="row justify-content-center mt-1 mb-2">
-                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1" onclick="operation('play');">再生 / 一時停止</button>
-                    </div>
-                    <div class="row my-2 justify-content-center">
-                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2" onclick="operation('previous');">前へ</button>
-                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2" onclick="operation('next');">次へ</button>
-                    </div>
-                    <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
-                        <span class="text-light py-1">音量</span>
-                    </div>
-                    <div class="row bg-primary mt-0 mb-2 justify-content-center">
-                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる" onclick="operation('volumeDown');">DOWN</button>
-                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
-                    </div>
-                    <div class="row justify-content-center my-2">
-                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧を表示</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
