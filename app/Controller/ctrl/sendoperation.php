@@ -14,7 +14,7 @@ $app->post("/ctrl/sendoperation", function (request $request, response $response
     $sessionData = $sessionTable->select([
         "session_id"=> $data["sessionId"]
     ]);
-    if (empty($sessionData)){
+    if (empty($sessionData) || empty($data["softwareId"])){
         return;
     }
     

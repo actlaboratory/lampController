@@ -80,7 +80,11 @@
     <script>
         var basePath = "{{ get_base_path() }}";
         var sessionId = "{{ session.id }}";
-        var softwareId = 13;
+        {% if session.defaultLamp matches '/^\\d+$/' %}
+            var softwareId = {{ session.defaultLamp }};
+        {% else %}
+            var softwareId = null;
+        {% endif %}
         
         {# ビューのリアルタイム更新 #}
         function refreshView(){
@@ -96,7 +100,7 @@
             {# JSONを送ってJSONをもらう #}
             var reqJson = JSON.stringify({
                 "sessionId": "{{ session.id }}",
-                "softwareId": 13
+                "softwareId": softwareId
             });
             var xhr = new XMLHttpRequest;
             xhr.onload = function(){

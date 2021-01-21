@@ -13,8 +13,8 @@ $app->post("/ctrl/getstatus", function (request $request, response $response){
     $sessionData = $sessionTable->select([
         "session_id"=> $data["sessionId"]
     ]);
-    if (empty($sessionData)){
-        return receiveDisconnectJson();
+    if (empty($sessionData) || empty($data["softwareId"])){
+        return receiveDisconnectJson($response);
     }
     
     // ステータスjson取得
