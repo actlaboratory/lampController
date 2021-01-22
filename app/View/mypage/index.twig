@@ -1,5 +1,5 @@
-{% set page_title = "ログイン" %}
-{% set page_description = "LAMP Controllerのログインページです。" %}
+{% set page_title = "マイページ" %}
+{% set page_description = "LAMP Controllerのマイページです。ここで、設定などを行います。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -19,27 +19,49 @@
         <h3>{{ userDisplayName }}さんのマイページ</h3>
     </div>
     
-    {% if message!=null and message!="" %}
-        <div class="alert-danger p-3">{{ message | nl2br}}</div>
-	{% endif %}
+    <div id="messageText">
+        {% if message!=null and message!="" %}
+            <div class="alert-danger p-3">{{ message | nl2br}}</div>
+	    {% endif %}
+    </div>
 
 
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-1">
+            <div class="row bg-dark mb-2">
                 <h3 class="h3 text-white">捜査対象のLAMPを設定</h3>
             </div>
-            <div class="row mb-2">
-                <label class="col-flex mr-3" for="form_selectLamp">LAMP選択</label>
-                <select class ="col-flex" id="form_selectLamp" name="defaultLamp" required autofocus>
-                    {% for s in software %}
-                        <option value="{{ s.id }}">{{ s.display_name }}</option>
+            <div class="row mb-4">
+                <label class="col-12 col-sm-3" for="form_selectLamp">LAMP選択</label>
+                <select class ="col mx-3" id="form_selectLamp" name="defaultLamp" required autofocus>
+                    {% for s in softwareList %}
+                        {% if session.defaultLamp == s.id %}
+                            <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
+                        {% else %}
+                            <option value="{{ s.id }}">{{ s.display_name }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
-                <input type="submit" class="col-flex btn btn-success" value="設定">
+                <div class="col-12 col-sm-2 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="設定">
+                </div>
             </div>
         </div>
     </form>
+
+    <script>
+        {# ここからのブラウザバック禁止 #}
+        var messageText = document.getElementById("messageText");
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', (e) => {
+            var newElement = document.createElement("div");
+            newElement.className = "alert-danger p-3";
+            newElement.textContent = "この画面では、ブラウザの戻る機能はは利用できません。";
+            messageText.replaceChild(newElement, messageText.firstChild);
+            history.go(1);
+        });
+    </script>
+
 
 {% endblock %}
 
