@@ -34,7 +34,7 @@ function array2fileDatabase($fileArray, $dirTable, $fileTable, $parent){
                 $p = $dirTable->insert([
                     "name"=>$k,
                     "parent_id"=>$parent,
-                    "user_id"=>1
+                    "user_id"=>2
                 ]);
                 array2fileDatabase($v, $dirTable, $fileTable, $p);
             }

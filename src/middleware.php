@@ -79,7 +79,7 @@ class SiteMainHandler{
 		if (!SessionUtil::setSession($this->container->get("db"))){
 			SessionUtil::unsetSession($this->container->get("db"));
 			if (!empty($path[1]) && $path[1]==="ctrl"){
-				return $response->withRedirect($request->getUri()->getPath());
+				return $response->withRedirect($request->getUri()->getBasePath());
 			}
 			return $next($request, $response);
 		}
