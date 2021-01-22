@@ -37,7 +37,7 @@ class SessionUtil{
             return FALSE;
         }
         $_SESSION["id"] = $sessionData["session_id"];
-        $_SESSION["user_id"] = $userData["id"];
+        $_SESSION["userId"] = $userData["id"];
 
         
         // クッキーとセッションの延長
@@ -69,7 +69,7 @@ class SessionUtil{
             "last_logdin_at"=> time()
         ]);
         $_SESSION["id"] = $sessionId;
-        $_SESSION["user_id"] = $userId;
+        $_SESSION["userId"] = $userId;
         return TRUE;
     }
     
