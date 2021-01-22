@@ -1,0 +1,48 @@
+{% set page_title = "ログイン" %}
+{% set page_description = "LAMP Controllerのログインページです。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>マイページ</h2>
+    </div>
+
+    <div class="h3 text-center">
+        <h3>{{ userDisplayName }}さんのマイページ</h3>
+    </div>
+    
+    {% if message!=null and message!="" %}
+        <div class="alert-danger p-3">{{ message | nl2br}}</div>
+	{% endif %}
+
+
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-1">
+                <h3 class="h3 text-white">捜査対象のLAMPを設定</h3>
+            </div>
+            <div class="row mb-2">
+                <label class="col-flex mr-3" for="form_selectLamp">LAMP選択</label>
+                <select class ="col-flex" id="form_selectLamp" name="defaultLamp" required autofocus>
+                    {% for s in software %}
+                        <option value="{{ s.id }}">{{ s.display_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="col-flex btn btn-success" value="設定">
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
