@@ -8,6 +8,7 @@ $app->get("/ctrl/logout", function (request $request, response $response){
     // ログアウト
     SessionUtil::unsetSession($this->db);
 
-    // トップページにリダイレクト
-    return $response->withRedirect($request->getUri()->getBasePath(). "/");
+    // ログアウト画面表示
+    $data = [];
+    return $this->view->render($response, 'ctrl/logout.twig', $data);
 });

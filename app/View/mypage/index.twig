@@ -19,7 +19,7 @@
         <h3>{{ userDisplayName }}さんのマイページ</h3>
     </div>
     
-    <div id="messageText">
+    <div id="messageText"aria-live="assertive">
         {% if message!=null and message!="" %}
             <div class="alert-danger p-3">{{ message | nl2br}}</div>
 	    {% endif %}
