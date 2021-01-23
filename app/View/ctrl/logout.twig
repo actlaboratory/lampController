@@ -22,14 +22,14 @@
     <div id="messageText" aria-live="assertive"><div></div></div>
     
     <div class="text-center">
-        <a class="btn btn-success my-5" href="{{ get_base_path }}"role="button">トップへ</a>
+        <a class="btn btn-success my-5" href="{{ get_base_path() }}" role="button">トップへ</a>
     </div>
 
     <script>
         {# ここからのブラウザバック禁止 #}
         var messageText = document.getElementById("messageText");
         history.pushState(null, null, location.href);
-        window.addEventListener('popstate', (e) => {
+        window.addEventListener('popstate', function(e){
             var newElement = document.createElement("div");
             newElement.className = "alert-danger p-3";
             newElement.textContent = "この画面では、ブラウザの戻る機能はは利用できません。";
