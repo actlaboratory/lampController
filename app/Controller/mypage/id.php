@@ -31,6 +31,21 @@ $app->post("/mypage/id", function (request $request, response $response){
         }
 
     // アカウント削除
+    } elseif (!empty($input["newDisplayName"])){
+        $userData = $userTable->select([
+            "id"=> $_SESSION["userId"]
+        ]);
+        if (!empty($userData)){
+            $userTable->update([
+                "id"=> $_SESSION["userId"],
+                "display_name"=> $input["newDisplayName"]
+            ]);
+            return showIdConfigView($this->view, $this->db, $response, "表示名を変更しました。");
+        } else{
+            return showIdConfigView($this->view, $this->db, $response, "表示名の変更に失敗しました。");
+        }
+
+    // アカウント削除
     } elseif (!empty($input["userName"]) && !empty($input["deleteConfirmPassword"]) && !empty($input["deleteConfirm"])){
         $userData = $userTable->select([
             "id"=> $_SESSION["userId"],

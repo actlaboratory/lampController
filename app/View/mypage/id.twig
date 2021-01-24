@@ -1,5 +1,5 @@
-{% set page_title = "マイページ" %}
-{% set page_description = "LAMP Controllerのマイページです。ここで、設定などを行います。" %}
+{% set page_title = "アカウント設定" %}
+{% set page_description = "LAMP Controllerのアカウント設定を行います。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -12,13 +12,9 @@
 {% block page_content %}
 
     <div class="jumbotron text-center">
-        <h2>マイページ</h2>
+        <h2>アカウント設定</h2>
     </div>
 
-    <div class="h3 text-center">
-        <h3>{{ userDisplayName }}さんのマイページ</h3>
-    </div>
-    
     <div id="messageText"aria-live="assertive" role="alert">
         {% if message!=null and message!="" %}
             <div class="alert-danger p-3">{{ message | nl2br}}</div>
@@ -29,7 +25,7 @@
     {# LAMP変更 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
+            <div class="row bg-dark mb-4 px-2">
                 <h3 class="h3 text-white">表示名の変更</h3>
             </div>
             <div class="row mb-4">
@@ -45,7 +41,7 @@
     {# パスワードの変更 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
+            <div class="row bg-dark mb-4 px-2">
                 <h3 class="h3 text-white">パスワードの変更</h3>
             </div>
             <div class="row mb-4">
@@ -70,7 +66,7 @@
     {# アカウント削除 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
+            <div class="row bg-dark mb-4 px-2">
                 <h3 class="h3 text-white">アカウントの削除</h3>
             </div>
             <div class="row mb-4">
