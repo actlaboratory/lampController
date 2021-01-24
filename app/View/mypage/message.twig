@@ -1,0 +1,26 @@
+{% set page_title = "マイページ" %}
+{% set page_description = "LAMP Controllerのマイページです。ここで、設定などを行います。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>マイページ</h2>
+    </div>
+
+    <div id="messageText"aria-live="assertive" role="alert">
+        <div class="alert-danger p-3">{{ message | nl2br}}</div>
+    </div>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
