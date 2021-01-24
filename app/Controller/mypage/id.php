@@ -32,13 +32,26 @@ $app->post("/mypage/id", function (request $request, response $response){
     // 単純表示
     if (!empty($input["password"])){
         if (password_verify($input["password"], $userData["password_hash"])){
+            $_SESSION["idConfigTime"] = time();
             return showIdConfigView($this->view, $this->db, $response, "このページで設定を行った場合、ブラウザの戻る機能は正常に動作しません。");
         } else{
             return showIdConfigMessageView($this->view, $response, "パスワードが謝っています。\nブラウザで前のページに戻り、もう一度やり直してください。");
         }
+    }
+
+    // 5分経過でタイムアウト処理
+    if (!empty($_SESSION["idConfigTime"]) && (time() - $_SESSION["idConfigTime"]) <= 300){
+        $_SESSION["idConfigTime"] = time(); //時間延長
+    } else{
+        return showIdConfigMessageView($this->view, $response, "タイムアウトしました。アカウント設定を継続するには、再度、マイページでのパスワード入力が必要です。");
+    }
 
     // 表示名変更
-    } elseif (!empty($input["newDisplayName"])){
+    if (!empty($input["newDisplayName"])){
+        $message = ValidationUtil::checkString("userDisplayName", $input["newDisplayName"]);
+        if (!empty($message)){
+            return showIdConfigView($this->view, $this->db, $response, $message);
+        }
         $userTable->update([
             "id"=> $_SESSION["userId"],
             "display_name"=> $input["newDisplayName"]

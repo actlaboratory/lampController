@@ -7,6 +7,7 @@ use Model\Dao\User;
 use Model\Dao\Software;
 use Model\Dao\Directory;
 use Util\SessionUtil;
+use Util\ValidationUtil;
 
 $app->get("/mypage", function (request $request, response $response){
     // マイページ表示
@@ -39,17 +40,23 @@ $app->post("/mypage", function (request $request, response $response){
             $_SESSION["defaultLamp"] = NULL;
             $message = "LAMPの登録を解除しました。\nブラウザの戻る機能を利用する場合は、移動先のページを再読み込みしてください。";
         } elseif ($input["manageLampType"]==="name"){
-            $softwareData = $softwareTable->select([
-                "id"=> $input["manageLamp"],
-                "user_id"=> $_SESSION["userId"]
-            ]);
-            if (!empty($softwareData)){
-                $softwareTable->update([
+            $message = ValidationUtil::checkString("lampDisplayName", $input["newName"]);
+            if (empty($message)){
+                $softwareData = $softwareTable->select([
                     "id"=> $input["manageLamp"],
-                    "display_name"=> $input["newName"]
+                    "user_id"=> $_SESSION["userId"]
                 ]);
+                if (!empty($softwareData)){
+                    $softwareTable->update([
+                        "id"=> $input["manageLamp"],
+                        "display_name"=> $input["newName"]
+                    ]);
+                    $message = "LAMPの名前を変更しました。";
+                } else{
+                    $message = "LAMPの名前を変更できませんでした。";
+                }
             }
-            $message = "LAMPの名前を変更しました。";
+
         }   
         
     }
