@@ -4,7 +4,7 @@ namespace Util;
 
 class ValidationUtil{
 
-	// URLの正規表現パターン
+	// 各種文字列の正規表現パターン
 	const URL_PATTERN = "@^https?://([a-zA-Z0-9]+[\\.\\-])+[a-zA-Z0-9]+/.*$@";
 	const USER_NAME_PATTERN = "@^[a-z0-9._\\-]{6,30}$@";
 	const USER_DISPLAY_NAME_PATTERN = "@^.{1,30}$@u";
