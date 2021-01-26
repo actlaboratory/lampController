@@ -5,6 +5,7 @@ use Slim\Http\Response;
 use Model\Dao\User;
 use Model\dao\Software;
 use Util\ApiUtil;
+use Util\ValidationUtil;
 
 // ユーザ名、パスワード、ドライブシリアル、コンピュータ名を受け取って登録。
 // 成功したらソフトウェアキーを返す
@@ -33,6 +34,16 @@ function entrySoftwareFromJson($request, $response, $db){
     $software = $softwareTable->select(["drive_serial_no"=>$softwareArray["driveSerialNo"], "pc_name"=>$softwareArray["pcName"]]);
     if (!$software===FALSE){
         return ApiUtil::responseErrorJson($response, 400, "already entered");
+    }
+    
+    // PC名、ドライブシリアルチェック
+    if (!empty(ValidationUtil::checkString("pcName", $softwareArray["pcName"])) || !is_int($softwareArray["driveSerialNo"])){
+        return ApiUtil::responseErrorJson($response, 400, "invalid pc information");
+    }
+
+    // 表示名チェック
+    if (!empty(ValidationUtil::checkString("lampDisplayName", $softwareArray["displayName"]))){
+        return ApiUtil::responseErrorJson($response, 400, "invalid display name");
     }
     
     // ソフトウェア登録
