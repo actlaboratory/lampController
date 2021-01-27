@@ -1,0 +1,119 @@
+{% set page_title = "マイページ" %}
+{% set page_description = "LAMP Controllerのマイページです。ここで、設定などを行います。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>マイページ</h2>
+    </div>
+
+    <div class="text-right">
+        <p>ようこそ、{{ userDisplayName }}さん。</p>
+    </div>
+    
+    <div id="messageText"aria-live="assertive" role="alert">
+        {% if message!=null and message!="" %}
+            <div class="alert-danger p-3">{{ message | nl2br}}</div>
+	    {% endif %}
+    </div>
+
+
+    {# LAMP変更 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-2">
+                <h3 class="h3 text-white">捜査対象のLAMPを選択</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-8 mt-3 col-sm-3 order-1" for="form_selectLamp">LAMP選択</label>
+                <select class ="col mx-3 order-3 order-sm-2" id="form_selectLamp" name="defaultLamp" required>
+                    {% for s in softwareList %}
+                        {% if session.defaultLamp == s.id %}
+                            <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
+                        {% else %}
+                            <option value="{{ s.id }}">{{ s.display_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="col-4 col-sm-2 order-1 order-sm-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="選択">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# LAMP設定 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-2">
+                <h3 class="h3 text-white">LAMPの管理</h3>
+            </div>
+            <div class="row mb-4">
+                <select class ="col-11 col-lg-6 mx-auto" name="manageLamp" required aria-label="設定を変更するLAMP">
+                    {% for s in softwareList %}
+                        {% if session.defaultLamp == s.id %}
+                            <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
+                        {% else %}
+                            <option value="{{ s.id }}">{{ s.display_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input class="col-11 col-lg-5 mx-auto" placeholder="新しい名前" name="newName" aria-label="新しい名前">
+            </div>
+            <div class="row my-2">
+                <div class="col-4 col-sm-3 mx-auto"><label><input type="radio" name="manageLampType" value="name" checked>名前の変更</label></div>
+                <div class="col-4 col-sm-3 mx-auto"><label><input type="radio" name="manageLampType" value="release">登録解除</label></div>
+                <div class="col"><input type="submit" class="float-right btn btn-success" value="実行"></div>
+            </div>
+        </div>
+    </form>
+
+    {# ファイル削除 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-2">
+                <h3 class="h3 text-white">フォルダの登録解除</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-9 col-sm-3 order-1 mt-3" for="form_deleteDirectory">フォルダ選択</label>
+                <select class ="col mx-3 order-3 order-sm-2" id="form_deleteDirectory" name="directory" required>
+                    {% for d in directoryList %}
+                        <option value="{{ d.id }}">{{ d.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="col-3 col-sm-2 order-2 order-sm-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="解除">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# アカウント情報変更 #}
+    <form method="post" action="{{ get_base_path() }}/mypage/id" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-2">
+                <h3 class="h3 text-white">アカウント情報設定</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-9 col-sm-3 order-1 mt-3" for="form_password">パスワード</label>
+                <input class="col order-3 order-sm-2 mx-3" type="password" id="form_password" name="password" required>
+                <div class="col-3 col-sm-2 order-2 order-sm-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="設定">
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}

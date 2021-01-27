@@ -81,6 +81,9 @@ class SiteMainHandler{
 			if (!empty($path[1]) && $path[1]==="ctrl"){
 				return $response->withRedirect($request->getUri()->getBasePath());
 			}
+			if (!empty($path[1]) && $path[1]==="mypage"){
+				return $response->withRedirect($request->getUri()->getBasePath());
+			}
 			return $next($request, $response);
 		}
 		return $next($request, $response);

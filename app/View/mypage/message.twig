@@ -1,0 +1,26 @@
+{% set page_title = "通知メッセージ" %}
+{% set page_description = "LAMP Controlerアカウント設定の通知メッセージ" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>通知</h2>
+    </div>
+
+    <div id="messageText"aria-live="assertive" role="alert">
+        <div class="alert-danger p-3">{{ message | nl2br}}</div>
+    </div>
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}

@@ -1,0 +1,97 @@
+{% set page_title = "アカウント設定" %}
+{% set page_description = "LAMP Controllerのアカウント設定を行います。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>アカウント設定</h2>
+    </div>
+
+    <div id="messageText"aria-live="assertive" role="alert">
+        {% if message!=null and message!="" %}
+            <div class="alert-danger p-3">{{ message | nl2br}}</div>
+	    {% endif %}
+    </div>
+
+
+    {# LAMP変更 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 text-white">表示名の変更</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-8 mt-3 col-sm-3 order-1" for="form_displayName">新しい表示名</label>
+                <input type="text" class ="col mx-3 order-3 order-sm-2" id="form_displayName" name="newDisplayName" required value="{{ userDisplayName }}">
+                <div class="col-4 col-sm-2 order-1 order-sm-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="変更">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# パスワードの変更 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 text-white">パスワードの変更</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-5 col-md-3 mt-3" for="form_newPassword">新規パスワード</label>
+                <input type="password" class="col mx-3" id="form_newPassword" name="newPassword" required>
+            </div>
+            <div class="row mb-4">
+                <label class="col-5 col-md-3 mt-3" for="form_confirmNewPassword">確認用再入力</label>
+                <input type="password" class="col mx-3" id="form_confirmNewPassword" name="confirmNewPassword" required>
+            </div>
+            <div class="row mb-4">
+                <div class="col-9 my-0">
+                    <p>※パスワードを変更すると、すべてのセッションが切断されます。</p>
+                </div>
+                <div class="col-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="変更">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# アカウント削除 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 text-white">アカウントの削除</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-5 col-md-3 mt-3" for="form_userName">ユーザー名</label>
+                <input type="text" class="col mx-3" id="form_userName" name="userName" required>
+            </div>
+            <div class="row mb-4">
+                <label class="col-5 col-md-3 mt-3" for="form_deleteConfirmPassword">パスワード</label>
+                <input type="password" class="col mx-3" id="form_deleteConfirmPassword" name="deleteConfirmPassword" required>
+            </div>
+        <div class="row mb-4">
+                <div class="col-9 my-2">
+                    <label><input type="checkbox" name="deleteConfirm" value="yes", required>このアカウントを削除します。</label>
+                </div>
+                <div class="col-3 my-2">
+                    <input type="submit" class="float-right btn btn-success" value="削除">
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
