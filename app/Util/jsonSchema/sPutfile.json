@@ -1,0 +1,38 @@
+{
+    "type": "object",
+    "properties": {
+        "apiVersion": {
+            "type": "integer"
+        },
+        "software": {
+            "type": "object",
+            "properties": {
+                "softwareKey": {
+                    "type": "string"
+                }
+            },
+            "required": ["softwareKey"]
+        }
+        "file": {
+            "$ref": "#definitions/directory"
+        }
+    },
+    "required": ["apiVersion", "software", "file"],
+    "definitions": {
+        "directory" : {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {"type": "string"},
+                    {"type": "object",
+                        "patternProperties": {
+                            ".+": {
+                                "$ref": "#/definitions/directory"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

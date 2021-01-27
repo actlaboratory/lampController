@@ -4,6 +4,7 @@
 
 use Util\ApiUtil;
 use Util\SessionUtil;
+use Util\ValidationUtil;
 
 $app->add(new DataBaseTransactionHandler($app->getContainer()));
 $app->add(new ApiJsonHandler($app->getContainer()));
@@ -50,8 +51,21 @@ class ApiJsonHandler{
 		if(!ApiUtil::apiVersionCheck($path, $request)){
 			return ApiUtil::responseErrorJson($response, 400, "different version");
 		}
+		$data = json_decode($request->getBody());
 		if (!empty($path[3]) && $path[3]==="entry"){
-			return $response = $next($request, $response);
+			if (ValidationUtil::checkJson($data, "sEntry")){
+				return $response = $next($request, $response);
+			} else{
+				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+			}
+		} elseif (!empty($path[3]) && $path[3]==="putfile"){
+			if (!ValidationUtil::checkJson($data, "sPutfile")){
+				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+			}
+		} else{
+			if (!ValidationUtil::checkJson($data, "sSoftware")){
+				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+			}
 		}
 		if(ApiUtil::apiSoftwareCheck($request, $this->container->get("db"))){
 			return $response = $next($request, $response);

@@ -22,7 +22,8 @@
         "doctrine/dbal": "v2.8.0",
         "bryanjhv/slim-session": "~3.0",
         "larapack/dd": "1.1",
-		"phpunit/phpunit":"5.7.27"
+		"phpunit/phpunit":"5.7.27",
+        "justinrainbow/json-schema": "^5.2"
     },
     "autoload": {
         "psr-4": {

@@ -1,0 +1,36 @@
+{
+    "type": "object",
+    "properties": {
+        "apiVersion": {
+            "type": "integer"
+        },
+        "software": {
+            "type": "object",
+            "properties": {
+                "driveSerialNo": {
+                    "type": "integer"
+                },
+                "pcName": {
+                    "type": "string"
+                },
+                "displayName": {
+                    "type": "string"
+                }
+            },
+            "required": ["driveSerialNo", "pcName", "displayName"]
+        }
+        "authentication": {
+            "type": "object",
+            "properties": {
+                "userName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "required": ["userName", "password"]
+        }
+    },
+    "required": ["apiVersion", "software", "authentication"],
+}

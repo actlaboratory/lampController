@@ -1,0 +1,65 @@
+{
+    "type": "object",
+    "properties": {
+        "apiVersion": {
+            "type": "integer"
+        },
+        "authentication": {
+            "type": "object",
+            "properties": {
+                "userName": {
+                    "type": "string"
+                },
+                "softwareKey": {
+                    "type": "string"
+                }
+            }
+            "required": ["userName", "softwareKey"]
+        }
+        "software": {
+            "type": "object",
+            "properties": {
+                "driveSerialNo": {
+                    "type": "integer"
+                },
+                "pcName": {
+                    "type": "string"
+                },
+            },
+            "required": ["driveSerialNo", "pcName"]
+        }
+        "status": {
+            "type": "object",
+            "properties": {
+                "playbackStatus": {
+                    "type": "string"
+                },
+                "fileTitle": {
+                    "type": "string"
+                }
+                "filePath": {
+                    "type": "string"
+                }
+                "fileArtist": {
+                    "type": "string"
+                }
+                "fileAlbum": {
+                    "type": "string"
+                }
+                "fileAlbumArtist": {
+                    "type": "string"
+                }"playbackTime": {
+                    "type": "integer"
+                }
+                "fileLength": {
+                    "type": "integer"
+                }
+            },
+            "required": ["playbackStatus", "fileTitle", "filePath", "fileArtist", "fileAlbum", "fileAlbumArtist", "playbackTime", "fileLength"]
+        }
+        "operation": {
+            "type": "string"
+        }
+    },
+    "required": ["apiVersion", "authentication", "software", "status"],
+}
