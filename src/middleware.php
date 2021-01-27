@@ -42,21 +42,18 @@ class ApiJsonHandler{
 	//api用jsonの検証
 	public function __invoke($request, $response, $next){
 		$path = explode("/",$request->getUri()->getPath());
-		if (empty($path[1]) || !$path[1]==="api"){
+		if (empty($path[1]) || $path[1]!=="api"){
 			return $response = $next($request, $response);
 		}
 		if (strpos($request->getHeaderLine("Content-Type"), "application/json")===FALSE){
 			return ApiUtil::responseErrorJson($response, 400, "not json");
 		}
-		if(!ApiUtil::apiVersionCheck($path, $request)){
-			return ApiUtil::responseErrorJson($response, 400, "different version");
-		}
+		
+		// JSONバリデーション
 		$data = json_decode($request->getBody());
 		if (!empty($path[3]) && $path[3]==="entry"){
 			$valid = ValidationUtil::checkJson($data, "sEntry");
-			if ($valid===""){
-				return $response = $next($request, $response);
-			} else{
+			if ($valid!==""){
 				return ApiUtil::responseErrorJson($response, 400, "$valid");
 			}
 		} elseif (!empty($path[3]) && $path[3]==="putfile"){
@@ -69,6 +66,13 @@ class ApiJsonHandler{
 			if ($valid!==""){
 				return ApiUtil::responseErrorJson($response, 400, $valid);
 			}
+		}
+		
+		if(!ApiUtil::apiVersionCheck($path, $request)){
+			return ApiUtil::responseErrorJson($response, 400, "different version");
+		}
+		if (!empty($path[3]) && $path[3]==="entry"){
+			return $response = $next($request, $response);
 		}
 		if(ApiUtil::apiSoftwareCheck($request, $this->container->get("db"))){
 			return $response = $next($request, $response);

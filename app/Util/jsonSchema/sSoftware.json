@@ -50,10 +50,10 @@
                     "type": "string"
                 },
                 "playbackTime": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "fileLength": {
-                    "type": "integer"
+                    "type": "number"
                 }
             },
             "required": ["playbackStatus", "fileTitle", "filePath", "fileArtist", "fileAlbum", "fileAlbumArtist", "playbackTime", "fileLength"]
