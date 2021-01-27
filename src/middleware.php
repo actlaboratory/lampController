@@ -42,7 +42,7 @@ class ApiJsonHandler{
 	//api用jsonの検証
 	public function __invoke($request, $response, $next){
 		$path = explode("/",$request->getUri()->getPath());
-		if (empty($data[1]) || !$path[1]==="api"){
+		if (empty($path[1]) || !$path[1]==="api"){
 			return $response = $next($request, $response);
 		}
 		if (strpos($request->getHeaderLine("Content-Type"), "application/json")===FALSE){
@@ -53,18 +53,21 @@ class ApiJsonHandler{
 		}
 		$data = json_decode($request->getBody());
 		if (!empty($path[3]) && $path[3]==="entry"){
-			if (ValidationUtil::checkJson($data, "sEntry")){
+			$valid = ValidationUtil::checkJson($data, "sEntry");
+			if ($valid===""){
 				return $response = $next($request, $response);
 			} else{
-				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+				return ApiUtil::responseErrorJson($response, 400, "$valid");
 			}
 		} elseif (!empty($path[3]) && $path[3]==="putfile"){
-			if (!ValidationUtil::checkJson($data, "sPutfile")){
-				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+			$valid = ValidationUtil::checkJson($data, "sPutfile");
+			if ($valid!==""){
+				return ApiUtil::responseErrorJson($response, 400, $valid);
 			}
 		} else{
-			if (!ValidationUtil::checkJson($data, "sSoftware")){
-				return ApiUtil::responseErrorJson($response, 400, "invalid json");
+			$valid = ValidationUtil::checkJson($data, "sSoftware");
+			if ($valid!==""){
+				return ApiUtil::responseErrorJson($response, 400, $valid);
 			}
 		}
 		if(ApiUtil::apiSoftwareCheck($request, $this->container->get("db"))){

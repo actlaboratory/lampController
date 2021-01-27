@@ -13,9 +13,9 @@
                 "softwareKey": {
                     "type": "string"
                 }
-            }
+            },
             "required": ["userName", "softwareKey"]
-        }
+        },
         "software": {
             "type": "object",
             "properties": {
@@ -24,10 +24,10 @@
                 },
                 "pcName": {
                     "type": "string"
-                },
+                }
             },
             "required": ["driveSerialNo", "pcName"]
-        }
+        },
         "status": {
             "type": "object",
             "properties": {
@@ -36,30 +36,31 @@
                 },
                 "fileTitle": {
                     "type": "string"
-                }
+                },
                 "filePath": {
                     "type": "string"
-                }
+                },
                 "fileArtist": {
                     "type": "string"
-                }
+                },
                 "fileAlbum": {
                     "type": "string"
-                }
+                },
                 "fileAlbumArtist": {
                     "type": "string"
-                }"playbackTime": {
+                },
+                "playbackTime": {
                     "type": "integer"
-                }
+                },
                 "fileLength": {
                     "type": "integer"
                 }
             },
             "required": ["playbackStatus", "fileTitle", "filePath", "fileArtist", "fileAlbum", "fileAlbumArtist", "playbackTime", "fileLength"]
-        }
+        },
         "operation": {
             "type": "string"
         }
     },
-    "required": ["apiVersion", "authentication", "software", "status"],
+    "required": ["apiVersion", "authentication", "software", "status"]
 }

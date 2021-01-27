@@ -2,6 +2,8 @@
 
 namespace Util;
 
+use JsonSchema;
+
 class ValidationUtil{
 
 	// 各種文字列の正規表現パターン
@@ -43,10 +45,18 @@ class ValidationUtil{
 
 	// JSONスキーマによる検証
 	static function checkJson($jsonObject, $schemaName){
-		$path = "app/Util/jsonSchema/". $schemaName;
+		$path = "app/Util/jsonSchema/". $schemaName. ".json";
 		$validator = new JsonSchema\Validator;
-		$validator->validate($data, (object)['$ref' => 'file://' . realpath($schemaName.".json")]);
-		return $validator->isValid();
+		$validator->validate($jsonObject, (object)['$ref' => 'file://'. realpath($path)]);
+		if ($validator->isValid()){
+			return "";
+		} else{
+			$ret = "";
+			foreach ($validator->getErrors() as $error) {
+				$ret = $ret. "[". $error['property']. "] => ". $error['message']. " / ";
+			}
+			return rtrim($ret, " / ");
+		}
 	}
 
 }
