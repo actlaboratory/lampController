@@ -4,20 +4,35 @@
         "apiVersion": {
             "type": "integer"
         },
-        "software": {
+        "authentication": {
             "type": "object",
             "properties": {
+                "userName": {
+                    "type": "string"
+                },
                 "softwareKey": {
                     "type": "string"
                 }
             },
-            "required": ["softwareKey"]
-        }
+            "required": ["userName", "softwareKey"]
+        },
+        "software": {
+            "type": "object",
+            "properties": {
+                "driveSerialNo": {
+                    "type": "integer"
+                },
+                "pcName": {
+                    "type": "string"
+                }
+            },
+            "required": ["driveSerialNo", "pcName"]
+        },
         "file": {
             "$ref": "#definitions/directory"
         }
     },
-    "required": ["apiVersion", "software", "file"],
+    "required": ["apiVersion", "authentication", "file"],
     "definitions": {
         "directory" : {
             "type": "array",

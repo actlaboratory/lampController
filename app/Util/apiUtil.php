@@ -3,6 +3,7 @@
 namespace Util;
 
 use Model\Dao\Software;
+use Model\Dao\User;
 use Slim\Http\Body;
 
 class ApiUtil{
@@ -34,15 +35,19 @@ class ApiUtil{
 
 	static function apiSoftwareCheck($request, $db){
 		$data = json_decode($request->getBody(), TRUE);
-		if (!empty($data["software"]["driveSerialNo"]) && !empty($data["software"]["pcName"])){
+		if (!empty($data["software"]["driveSerialNo"]) && !empty($data["software"]["pcName"]) && !empty($data["authentication"]["userName"]) && !empty($data["authentication"]["softwareKey"])){
 			$driveSerial = $data["software"]["driveSerialNo"];
 			$pcName = $data["software"]["pcName"];
+			$userName = $data["authentication"]["userName"];
+			$softwareKey = $data["authentication"]["softwareKey"];
 		} else{
 			return FALSE;
 		}
+		$uTable = new User($db);
+		$uInfo = $uTable->select(["user_name"=> $userName, "software_key"=> $softwareKey]);
 		$sTable = new Software($db);
 		$info = $sTable->select(["drive_serial_no"=>$driveSerial, "pc_name"=>$pcName]);
-		if ($info===false){
+		if (empty($info) || empty($uInfo)){
 			return FALSE;
 		} else{
 			$data["softwareId"] = $info["id"];
