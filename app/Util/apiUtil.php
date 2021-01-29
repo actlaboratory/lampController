@@ -50,10 +50,8 @@ class ApiUtil{
 		if (empty($info) || empty($uInfo)){
 			return FALSE;
 		} else{
-			$data["softwareId"] = $info["id"];
-			$body = new Body(fopen('php://temp', 'w+'));
-			$body->write(json_encode($data, JSON_UNESCAPED_UNICODE));
-			$request = $request->withBody($body);
+			$_SESSION["softwareId"] = $info["id"];
+			$_SESSION["userId"] = $uInfo["id"];
 			return TRUE;
 		}
 	}
