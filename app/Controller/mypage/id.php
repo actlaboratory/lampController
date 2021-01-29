@@ -83,7 +83,7 @@ $app->post("/mypage/id", function (request $request, response $response){
     // アカウント削除
     } elseif (!empty($input["userName"]) && !empty($input["deleteConfirmPassword"]) && !empty($input["deleteConfirm"])){
         if (password_verify($input["deleteConfirmPassword"], $userData["password_hash"]) && $input["deleteConfirm"]==="yes"){
-            set_time_limit(EXTEND_EXECUTE_TIME_LIMIT);
+            set_time_limit(EXTEND_EXECUTE_TIME_LIMIT * 5);
             $userTable->delete(["id"=> $_SESSION["userId"], "user_name"=> $input["userName"]]);
             return showIdConfigMessageView($this->view, $response, "アカウントの削除が完了しました。");
         } else{

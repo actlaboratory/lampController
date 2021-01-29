@@ -1,0 +1,53 @@
+{
+    "type": "object",
+    "properties": {
+        "apiVersion": {
+            "type": "integer"
+        },
+        "authentication": {
+            "type": "object",
+            "properties": {
+                "userName": {
+                    "type": "string"
+                },
+                "softwareKey": {
+                    "type": "string"
+                }
+            },
+            "required": ["userName", "softwareKey"]
+        },
+        "software": {
+            "type": "object",
+            "properties": {
+                "driveSerialNo": {
+                    "type": "integer"
+                },
+                "pcName": {
+                    "type": "string"
+                }
+            },
+            "required": ["driveSerialNo", "pcName"]
+        },
+        "file": {
+            "$ref": "#definitions/directory"
+        }
+    },
+    "required": ["apiVersion", "authentication", "file"],
+    "definitions": {
+        "directory" : {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {"type": "string"},
+                    {"type": "object",
+                        "patternProperties": {
+                            ".+": {
+                                "$ref": "#/definitions/directory"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '6c03dd0d221f69b5872f553d7ddbef85fc770e25',
+    'reference' => 'ee7e71490f10c2c4ae118fa28014d238df788734',
     'name' => 'slim/slim-skeleton',
   ),
   'versions' => 
@@ -64,6 +64,15 @@
       array (
       ),
       'reference' => 'a2c590166b2133a4633738648b6b064edae0814a',
+    ),
+    'justinrainbow/json-schema' => 
+    array (
+      'pretty_version' => '5.2.10',
+      'version' => '5.2.10.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '2ba9c8c862ecd5510ed16c6340aa9f6eadb4f31b',
     ),
     'larapack/dd' => 
     array (
@@ -369,7 +378,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '6c03dd0d221f69b5872f553d7ddbef85fc770e25',
+      'reference' => 'ee7e71490f10c2c4ae118fa28014d238df788734',
     ),
     'slim/twig-view' => 
     array (

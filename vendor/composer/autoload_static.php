@@ -53,6 +53,10 @@ class ComposerStaticInit3fa10fcab5578b5614493f6023b0fa59
             'Monolog\\' => 8,
             'Model\\' => 6,
         ),
+        'J' => 
+        array (
+            'JsonSchema\\' => 11,
+        ),
         'I' => 
         array (
             'Interop\\Container\\' => 18,
@@ -145,6 +149,10 @@ class ComposerStaticInit3fa10fcab5578b5614493f6023b0fa59
         'Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/Model',
+        ),
+        'JsonSchema\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
         ),
         'Interop\\Container\\' => 
         array (
