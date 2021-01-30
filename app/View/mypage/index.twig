@@ -11,7 +11,7 @@
 {# ページ本文 #}
 {% block page_content %}
 
-    <div class="jumbotron text-center">
+    <div class="bg-warning py-3 text-center">
         <h2>マイページ</h2>
     </div>
 
@@ -29,8 +29,8 @@
     {# LAMP変更 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
-                <h3 class="h3 text-white">捜査対象のLAMPを選択</h3>
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 my-auto text-white">捜査対象のLAMPを選択</h3>
             </div>
             <div class="row mb-4">
                 <label class="col-8 mt-3 col-sm-3 order-1" for="form_selectLamp">LAMP選択</label>
@@ -53,11 +53,11 @@
     {# LAMP設定 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
-                <h3 class="h3 text-white">LAMPの管理</h3>
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 my-auto text-white">LAMPの管理</h3>
             </div>
             <div class="row mb-4">
-                <select class ="col-11 col-lg-6 mx-auto" name="manageLamp" required aria-label="設定を変更するLAMP">
+                <select class ="col-11 col-lg-6 mx-auto my-1" name="manageLamp" required aria-label="設定を変更するLAMP">
                     {% for s in softwareList %}
                         {% if session.defaultLamp == s.id %}
                             <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
@@ -66,7 +66,7 @@
                         {% endif %}
                     {% endfor %}
                 </select>
-                <input class="col-11 col-lg-5 mx-auto" placeholder="新しい名前" name="newName" aria-label="新しい名前">
+                <input class="col-11 col-lg-5 mx-auto my-1" placeholder="新しい名前" name="newName" aria-label="新しい名前">
             </div>
             <div class="row my-2">
                 <div class="col-4 col-sm-3 mx-auto"><label><input type="radio" name="manageLampType" value="name" checked>名前の変更</label></div>
@@ -79,8 +79,8 @@
     {# ファイル削除 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
-                <h3 class="h3 text-white">フォルダの登録解除</h3>
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 my-auto text-white">フォルダの登録解除</h3>
             </div>
             <div class="row mb-4">
                 <label class="col-9 col-sm-3 order-1 mt-3" for="form_deleteDirectory">フォルダ選択</label>
@@ -99,8 +99,8 @@
     {# アカウント情報変更 #}
     <form method="post" action="{{ get_base_path() }}/mypage/id" autocomplete="off">
         <div class="container my-5">
-            <div class="row bg-dark mb-2">
-                <h3 class="h3 text-white">アカウント情報設定</h3>
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 my-auto text-white">アカウント情報設定</h3>
             </div>
             <div class="row mb-4">
                 <label class="col-9 col-sm-3 order-1 mt-3" for="form_password">パスワード</label>
