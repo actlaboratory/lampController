@@ -35,14 +35,14 @@
 </head>
 
 <body>
-{# サイトタイトル #}
-<div class="container">
+{# スマホ以外のサイトタイトル #}
+<div class="container d-none d-sm-block">
     <div class="row">
-        <div class="col-8 mr-auto">
+        <div class="col mr-auto">
             <h1><a href="{{ get_base_path() }}/">{{ site_name }}</a></h1>
         </div>
-        {# ログイン/ログアウト #}
-		<div class="col-4 text-right my-auto mx-auto">
+        {# スマホ以外のログイン/ログアウト #}
+		<div class="col-4 d-none d-sm-block text-right my-auto mx-auto">
             {% if session.id==NULL %}
                 <a class="btn btn-success" role="button" href="{{ get_base_path() }}/login">ログイン</a>
             {% else %}
