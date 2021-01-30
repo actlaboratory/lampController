@@ -1,6 +1,6 @@
 {% set topMessageLine = "このサイトは、現在テスト中です。" %}
-{% set page_title = "Hello World!" %}
-{% set page_description = "トップページです。" %}
+{% set page_title = "トップ" %}
+{% set page_description = "音楽再生ソフトのLAMPをウェブ上から操作する、LAMP Controllerのトップページです。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -17,26 +17,22 @@
 		<h2 class="h2 d-none d-sm-block">LAMP Controllerへようこそ</h2>
     </div>
 
-    <div>
-        {% if topMessageLine!=null and topMessageLine!="" %}
-            <div class="alert-danger p-3">{{ topMessageLine | nl2br}}</div>
-	    {% endif %}
-    </div>
+	{% if topMessageLine!=null and topMessageLine!="" %}
+		<div class="alert-danger p-3">{{ topMessageLine | nl2br}}</div>
+	{% endif %}
 
 
 	{# 説明等 #}
-	<div class="container my-5">
-		<div class="row mb-2">
-			<p> LAMP Controllerは、Light and Accessible Music Player（LAMP）を、ウェブブラウザから操作するためのサイトです。Windows上のLAMPの再生、停止、曲送りといった機能を、お手元のスマートフォンなどから利用できます。</p>
-			<p>
-
+	<div class="container my-4">
+		<div class="row my-auto">
+			<p>LAMP Controllerは、Light and Accessible Music Player（LAMP）を、ウェブブラウザから操作するためのサイトです。Windows上のLAMPの再生、曲送りといった機能を、お手元のスマートフォンなどから利用できます。</p>
 		</div>
 	</div>
 
     {# 手順 #}
-	<div class="container my-5">
+	<div class="container my-2">
 		<div class="row bg-success mb-4 px-2">
-			<h3 class="h3 text-white">１，LAMP Controllerにログイン</h3>
+			<h3 class="h3 text-white">１，ログインする</h3>
 		</div>
 		<div class="row mb-4">
 			<div class ="col mx-auto">
@@ -50,7 +46,7 @@
 
 	<div class="container my-5">
 		<div class="row bg-success mb-4 px-2">
-			<h3 class="h3 text-white">２，LAMPの登録</h3>
+			<h3 class="h3 text-white">２，LAMPを登録する</h3>
 		</div>
 		<div class="row mb-4">
 			<div class ="col-12 col-lg-9 mx-auto">
@@ -64,7 +60,7 @@
 
 	<div class="container my-5">
 		<div class="row bg-success mb-4 px-2">
-			<h3 class="h3 text-white">３，サイトの設定を完了する</h3>
+			<h3 class="h3 text-white">３，設定を完了する</h3>
 		</div>
 		<div class="row mb-4">
 			<div class ="col mx-auto">
