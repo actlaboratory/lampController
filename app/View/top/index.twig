@@ -1,5 +1,6 @@
-{% set page_title = "Hello World!" %}
-{% set page_description = "トップページです。" %}
+{% set topMessageLine = "このサイトは、現在テスト中です。" %}
+{% set page_title = "トップ" %}
+{% set page_description = "音楽再生ソフトのLAMPをウェブ上から操作する、LAMP Controllerのトップページです。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -11,8 +12,64 @@
 {# ページ本文 #}
 {% block page_content %}
 
-	<p> ようこそslimフレームワークの世界へ！</p>
-	<p> さああなたもslimを使ってウェブアプリの開発を始めましょう！</p>
+    <div class="jumbotron text-center">
+        <h2 class="h5 d-sm-none">LAMP Controllerへようこそ</h2>
+		<h2 class="h2 d-none d-sm-block">LAMP Controllerへようこそ</h2>
+    </div>
+
+	{% if topMessageLine!=null and topMessageLine!="" %}
+		<div class="alert-danger p-3">{{ topMessageLine | nl2br}}</div>
+	{% endif %}
+
+
+	{# 説明等 #}
+	<div class="container my-4">
+		<div class="row my-auto">
+			<p>LAMP Controllerは、Light and Accessible Music Player（LAMP）を、ウェブブラウザから操作するためのサイトです。Windows上のLAMPの再生、曲送りといった機能を、お手元のスマートフォンなどから利用できます。</p>
+		</div>
+	</div>
+
+    {# 手順 #}
+	<div class="container my-2">
+		<div class="row bg-success mb-4 px-2">
+			<h3 class="h3 text-white">１，ログインする</h3>
+		</div>
+		<div class="row mb-4">
+			<div class ="col mx-auto">
+				<p class="d-none d-sm-block">　サイト上部のログインボタンより、LAMP Controllerにログインします。</p>
+				<p class="d-sm-none">　サイト上部のメニューからログインを選び、LAMP Controllerにログインします。</p>
+				<p>　ユーザー登録がまだの方は、サイト上部のメニューからユーザー登録を選び、登録を行った後、ログインしてください。</p>
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5">
+		<div class="row bg-success mb-4 px-2">
+			<h3 class="h3 text-white">２，LAMPを登録する</h3>
+		</div>
+		<div class="row mb-4">
+			<div class ="col-12 col-lg-9 mx-auto">
+				<p>　次に、ACT Laboratoryのページより、LAMPをダウンロードし、お好みの場所に展開します。その後、機能メニューから「LAMP Controllerの設定」を開き、LAMPを登録します。</p>
+			</div>
+			<div class="col-12 col-lg">
+				<a class="float-right btn btn-dark text-white my-2">LAMPのページ</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container my-5">
+		<div class="row bg-success mb-4 px-2">
+			<h3 class="h3 text-white">３，設定を完了する</h3>
+		</div>
+		<div class="row mb-4">
+			<div class ="col mx-auto">
+				<p>　サイト上部のメニューからマイページを開き、捜査対象のLAMPを設定します。この設定をすれば、準備は完了です。サイト上部のメニューよりコントローラを開き、LAMPを操作できます。</p>
+				<p>　ファイルを選択して再生する場合は、LAMPの機能メニューから「LAMP Controllerのファイル」を開き、フォルダを送信してください。ファイル一覧に表示されます。</p>
+			</div>
+		</div>
+	</div>
+
 
 {% endblock %}
 
