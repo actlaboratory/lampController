@@ -11,7 +11,7 @@
 {# ページ本文 #}
 {% block page_content %}
 
-    <div class="jumbotron text-center">
+    <div class="bg-warning py-3 text-center">
         <h2>アカウント設定</h2>
     </div>
 
@@ -22,7 +22,7 @@
     </div>
 
 
-    {# LAMP変更 #}
+    {# 名前変更 #}
     <form method="post" autocomplete="off">
         <div class="container my-5">
             <div class="row bg-dark mb-4 px-2">
@@ -34,6 +34,57 @@
                 <div class="col-4 col-sm-2 order-1 order-sm-3 my-2">
                     <input type="submit" class="float-right btn btn-success" value="変更">
                 </div>
+            </div>
+        </div>
+    </form>
+
+    {# ゲストURL発行 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 text-white">ゲストURLの発行</h3>
+            </div>
+            <div class="row mb-4">
+                <select class ="col-11 col-lg-6 mx-auto my-1" name="lamp4guest" required aria-label="ゲストが操作するLAMP">
+                    {% for s in softwareList %}
+                        {% if session.defaultLamp == s.id %}
+                            <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
+                        {% else %}
+                            <option value="{{ s.id }}">{{ s.display_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input class="col-11 col-lg-5 mx-auto my-1" placeholder="ゲストの名前" name="guestName" aria-label="ゲストの名前">
+            </div>
+            <div class="row my-2">
+                <div class="col-9 my-0">
+                    <p>※ゲストが操作するLAMPと、ゲストの名前を指定して発行します。</p>
+                </div>
+                <div class="col-3 my-2">
+                    <input type="submit" class="my-auto float-right btn btn-success" value="発行">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# ゲスト管理 #}
+    <form method="post" autocomplete="off">
+        <div class="container my-5">
+            <div class="row bg-dark mb-4 px-2">
+                <h3 class="h3 text-white">ゲストの管理</h3>
+            </div>
+            <div class="row mb-4">
+                <label class="col-8 mt-3 col-sm-3" for="form_manageGuest">管理するゲスト</label>
+                <select class ="col mx-3" name="manageGuest" label="form_manageGuest" required>
+                    {% for g in guestList %}
+                        <option value="{{ g.id }}">{{ g.display_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row my-2">
+                <div class="col-4 col-sm-3 mx-auto"><label><input type="radio" name="manageGuestType" value="showURL" checked>URLの確認</label></div>
+                <div class="col-4 col-sm-3 mx-auto"><label><input type="radio" name="manageGuestType" value="delete">削除</label></div>
+                <div class="col"><input type="submit" class="float-right btn btn-success" value="実行"></div>
             </div>
         </div>
     </form>

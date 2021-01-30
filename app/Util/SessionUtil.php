@@ -4,17 +4,19 @@ namespace Util;
 
 use Model\Dao\User;
 use Model\Dao\Session;
+use Model\Dao\Guest;
 
 class SessionUtil{
     // セッション開始.
     static function setSession($db){
         $userTable = new User($db);
         $sessionTable = new Session($db);
+        $guestTable = new Guest($db);
 
         // 認証クッキーと有効なセッションがあれば自動ログイン
-        // セッションIDがあればCOOKIE修復
+        // セッションIDがあり、ゲストでなければCOOKIE修復
         $authCookie = self::getCookie(\AUTH_COOKIE_NAME);
-        if (!empty($_SESSION["id"]) && $sessionTable->select([
+        if (!empty($_SESSION["id"]) && empty($_SESSION["guestId"]) && $sessionTable->select([
             "session_id"=> $_SESSION["id"]
         ])){
             self::setCookie(\AUTH_COOKIE_NAME, $_SESSION["id"]);
@@ -27,8 +29,22 @@ class SessionUtil{
         $sessionData = $sessionTable->select([
             "session_id"=> $authData
         ]);
-        if (empty($sessionData)){
+        // セッションもなく、ゲストでもなければ追い出す
+        if (empty($sessionData) && empty($_SESSION["guestId"])){
             return FALSE;
+        }
+        
+        // ゲスト処理（PHPセッションで十分）
+        if (!empty($_SESSION["guestId"])){
+            $guestData = $guestTable->select([
+                "id"=> $_SESSION["guestId"]
+            ]);
+            // ゲストセッションが正しければパススルー
+            if (!empty($guestData)){
+                return TRUE;
+            } else{
+                return FALSE;
+            }
         }
         $userData = $userTable->select([
             "id"=> $sessionData["user_id"]

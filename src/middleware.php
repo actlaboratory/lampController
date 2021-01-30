@@ -99,13 +99,13 @@ class SiteMainHandler{
 		// セッションスタート
 		if (!SessionUtil::setSession($this->container->get("db"))){
 			SessionUtil::unsetSession($this->container->get("db"));
-			if (!empty($path[1]) && $path[1]==="ctrl"){
-				return $response->withRedirect($request->getUri()->getBasePath());
-			}
-			if (!empty($path[1]) && $path[1]==="mypage"){
+			if (!empty($path[1]) && ($path[1]==="ctrl" || $path[1]==="mypage")){
 				return $response->withRedirect($request->getUri()->getBasePath());
 			}
 			return $next($request, $response);
+		}
+		if (!empty($path[1]) && $path[1]==="mypage" && !empty($_SESSION["guestId"])){
+			return $response->withRedirect($request->getUri()->getBasePath());
 		}
 		return $next($request, $response);
 	}
