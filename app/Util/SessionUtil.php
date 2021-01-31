@@ -32,8 +32,9 @@ class SessionUtil{
         $sessionData = $sessionTable->select([
             "session_id"=> $authData
         ]);
-        // セッションもなく、ゲストでもなければ追い出す
-        if (empty($sessionData) && empty($_SESSION["guestId"])){
+
+        // セッションがなければ追い出す
+        if (empty($sessionData)){
             return FALSE;
         }
         
