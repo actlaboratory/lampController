@@ -26,7 +26,7 @@ require __DIR__ . '/src/middleware.php';
 $app->add(new \Slim\Middleware\Session([
 	'name'        => 'slim_session',
 	'autorefresh' => true,
-	'lifetime'    => '1 hour',
+	'lifetime'    => 10,
 	'ini_settings'=> array('session.use_trans_sid'=>1)
 ]));
 

@@ -96,6 +96,14 @@ class SiteMainHandler{
 		if (!empty($path[1]) && $path[1]==="login"){
 			return $response = $next($request, $response);
 		}
+		
+		//ゲスト用セッション開始
+		if (!empty($request->getQueryParams()["guest"])){
+			if (!SessionUtil::setGuestSession($request->getQueryParams()["guest"], $this->container->get("db"))){
+				$_SESSION = [];
+			}
+		}
+		
 		// セッションスタート
 		if (!SessionUtil::setSession($this->container->get("db"))){
 			SessionUtil::unsetSession($this->container->get("db"));
