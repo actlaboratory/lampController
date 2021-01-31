@@ -83,6 +83,7 @@ class SessionUtil{
                 $_SESSION["guestId"] = $guestData["id"];
                 $_SESSION["guestName"] = $guestData["display_name"];
                 $_SESSION["defaultLamp"] = $guestData["software_id"];
+                self::unsetCookie(\AUTH_COOKIE_NAME);
                 return TRUE;
             } else{
                 return FALSE;
