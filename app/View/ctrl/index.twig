@@ -24,11 +24,12 @@
                         <h3 class="h4 mb-1">CONTROLLER</h3>
                     </div>
                     <div class="row justify-content-center mt-1 mb-2">
-                        <button type="button" id="playButton" class="col-11 btn btn-dark my-2 mx-1" onclick="operation('play');">再生 / 一時停止</button>
+                        <button type="button" id="playButton" class="col-12 btn btn-dark my-2 mx-auto" onclick="operation('play');">再生 / 一時停止</button>
                     </div>
                     <div class="row my-2 justify-content-center">
-                        <button type="button" id="previousButton" class="col-5 btn btn-dark mx-2" onclick="operation('previous');">前へ</button>
-                        <button type="button" id="nextButton" class="col-5 btn btn-dark mx-2" onclick="operation('next');">次へ</button>
+                        <button type="button" id="previousButton" class="col-3 btn btn-dark mx-auto" onclick="operation('previous');">前へ</button>
+                        <button type="button" id="stopButton" class="col-4 btn btn-dark mx-auto" onclick="operation('stop');">停止</button>
+                        <button type="button" id="nextButton" class="col-3 btn btn-dark mx-auto" onclick="operation('next');">次へ</button>
                     </div>
                     <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
                         <span class="text-light py-1">音量</span>
@@ -38,7 +39,7 @@
                         <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
                     </div>
                     <div class="row justify-content-center my-2">
-                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧を表示</a>
+                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧へ</a>
                     </div>
                 </div>
             </div>
