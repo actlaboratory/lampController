@@ -4,31 +4,51 @@ namespace Util;
 
 use Model\Dao\User;
 use Model\Dao\Session;
+use Model\Dao\Guest;
 
 class SessionUtil{
     // セッション開始.
     static function setSession($db){
         $userTable = new User($db);
         $sessionTable = new Session($db);
+        $guestTable = new Guest($db);
 
         // 認証クッキーと有効なセッションがあれば自動ログイン
-        // セッションIDがあればCOOKIE修復
+        // セッションIDがあり、ゲストでなければCOOKIE修復
+        // ゲストはパススルー
         $authCookie = self::getCookie(\AUTH_COOKIE_NAME);
-        if (!empty($_SESSION["id"]) && $sessionTable->select([
+        if (!empty($_SESSION["id"]) && empty($_SESSION["guestId"]) && $sessionTable->select([
             "session_id"=> $_SESSION["id"]
         ])){
             self::setCookie(\AUTH_COOKIE_NAME, $_SESSION["id"]);
             $authData = $_SESSION["id"];
-        } elseif (empty($authCookie)){
+        } elseif (empty($authCookie) && (empty($_SESSION["guestId"]) || empty($_SESSION["id"]))){
             return FALSE;
-        } else{
+        } elseif (empty($_SESSION["guestId"])){
             $authData = $authCookie[0];
+        } else{
+            $authData = $_SESSION["id"];
         }
         $sessionData = $sessionTable->select([
             "session_id"=> $authData
         ]);
+
+        // セッションがなければ追い出す
         if (empty($sessionData)){
             return FALSE;
+        }
+        
+        // ゲスト処理（PHPセッションで十分）
+        if (!empty($_SESSION["guestId"])){
+            $guestData = $guestTable->select([
+                "id"=> $_SESSION["guestId"]
+            ]);
+            // ゲストセッションが正しければパススルー
+            if (!empty($guestData)){
+                return TRUE;
+            } else{
+                return FALSE;
+            }
         }
         $userData = $userTable->select([
             "id"=> $sessionData["user_id"]
@@ -52,8 +72,29 @@ class SessionUtil{
         return TRUE;
     }
 
+    // ゲストセッション開始
+    static function setGuestSession($guestId, $db){
+        $guestTable = new Guest($db);
+        $guestData = $guestTable->select([
+            "guest_id"=> $guestId
+        ]);
+        if (!empty($guestData)){
+            if (self::newSession($db, $guestData["user_id"], TRUE)){
+                $_SESSION["guestId"] = $guestData["id"];
+                $_SESSION["guestName"] = $guestData["display_name"];
+                $_SESSION["defaultLamp"] = $guestData["software_id"];
+                self::unsetCookie(\AUTH_COOKIE_NAME);
+                return TRUE;
+            } else{
+                return FALSE;
+            }
+        } else{
+            return FALSE;
+        }
+    }
+    
     // 新規セッション
-    static function newSession($db, $userId){
+    static function newSession($db, $userId, $guest=FALSE){
         $userTable = new User($db);
         if (empty($userTable->select([
             "id"=> $userId
@@ -61,11 +102,16 @@ class SessionUtil{
             return FALSE;
         }
         $sessionId = hash('sha256', random_int(PHP_INT_MIN, PHP_INT_MAX));
+        if ($guest){
+            $type = \SESSION_TYPE_BROWSER;
+        } else{
+            $type = \SESSION_TYPE_GUESTBROWSER;
+        }
         $sessionTable = new Session($db);
         $sessionTable->insert([
             "session_id"=> $sessionId,
             "user_id"=> $userId,
-            "type"=> \SESSION_TYPE_BROWSER,
+            "type"=> $type,
             "last_logdin_at"=> time()
         ]);
         $_SESSION["id"] = $sessionId;

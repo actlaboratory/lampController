@@ -17,12 +17,24 @@
 								<a class="nav-link" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
 							{% endif %}
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ get_base_path() }}/ctrl">コントローラ</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ get_base_path() }}/mypage">マイページ</a>
-						</li>
+						{% if session.id!=NULL %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ get_base_path() }}/ctrl">コントローラ</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ get_base_path() }}/file">ファイル一覧</a>
+							</li>
+							{% if session.guestId==NULL %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{ get_base_path() }}/mypage">マイページ</a>
+								</li>
+							{% endif %}
+						{% endif %}
+						{% if session.id==NULL %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ get_base_path() }}/entry">ユーザー登録</a>
+							</li>
+						{% endif %}
 					</ul>
 				</div>
 				<h1 class="h3 d-sm-none my-auto"><a class="text-white" href="{{ get_base_path() }}/">{{ site_name }}</a></h1>

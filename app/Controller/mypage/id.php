@@ -7,6 +7,7 @@ use Model\Dao\Software;
 use Model\Dao\Receive;
 use Model\Dao\Send_queue;
 use Model\Dao\Session;
+use Model\Dao\Guest;
 use Util\SessionUtil;
 use Util\ValidationUtil;
 
@@ -17,6 +18,7 @@ $app->post("/mypage/id", function (request $request, response $response){
     // データベース
     $userTable = new User($this->db);
     $sessionTable = new Session($this->db);
+    $guestTable = new Guest($this->db);
     $softwareTable = new Software($this->db);
     $receiveTable = new Receive($this->db);
     $send_queueTable = new Send_queue($this->db);
@@ -58,6 +60,37 @@ $app->post("/mypage/id", function (request $request, response $response){
         ]);
         return showIdConfigView($this->view, $this->db, $response, "表示名を変更しました。");
 
+    // ゲスト管理
+    } elseif (!empty($input["manageGuest"])){
+        $guestData = $guestTable->select([
+            "guest_id"=> $input["manageGuest"]
+        ]);
+        if (empty($guestData)){
+            return showIdConfigView($this->view, $this->db, $response, "選択したゲストの管理操作に失敗しました。もう一度、やり直してください。");
+        }
+        if ($input["manageGuestType"]==="showURL"){
+            return showIdConfigView($this->view, $this->db, $response, "選択したゲストのURLを取得しました。", $request->getURI()->getBaseURL(). "/ctrl?guest=". $guestData["guest_id"]);
+        } elseif($input["manageGuestType"]==="delete"){
+            $guestTable->delete([
+                "guest_id"=> $input["manageGuest"]
+            ]);
+            return showIdConfigView($this->view, $this->db, $response, "選択したゲストURLを削除しました。");
+        }
+                // ゲスト発行
+    } elseif (!empty($input["lamp4guest"])){
+        $message = ValidationUtil::checkString("userDisplayName", $input["guestName"]);
+        if (!empty($message)){
+            return showIdConfigView($this->view, $this->db, $response, $message);
+        }
+        $guestId = hash('sha256', random_int(PHP_INT_MIN, PHP_INT_MAX));
+        $guestTable->insert([
+            "guest_id"=> $guestId,
+            "display_name"=> $input["guestName"],
+            "user_id"=> $_SESSION["userId"],
+            "software_id"=> $input["lamp4guest"]
+        ]);
+        return showIdConfigView($this->view, $this->db, $response, "ゲストURLを発行しました。", $request->getURI()->getBaseURL(). "/ctrl?guest=". $guestId);
+
     // パスワード変更
     } elseif (!empty($input["newPassword"]) && !empty($input["confirmNewPassword"])){
         if ($input["newPassword"]!==$input["confirmNewPassword"]){
@@ -94,7 +127,7 @@ $app->post("/mypage/id", function (request $request, response $response){
 });
 
 // アカウント設定を表示
-function showIdConfigView($view, $db, $response, $message=""){
+function showIdConfigView($view, $db, $response, $message="", $guestURL=NULL){
     $data = ["message"=> $message];
     
     // ユーザー情報を取得
@@ -105,6 +138,23 @@ function showIdConfigView($view, $db, $response, $message=""){
     $data["userDisplayName"] = $userData["display_name"];
     $data["softwareKey"] = $userData["software_key"];
 
+    // ソフトウェア情報取得
+    $softwareTable = new Software($db);
+    $softwareData = $softwareTable->select([
+        "user_id"=> $_SESSION["userId"]
+    ], "display_name", "asc", "", TRUE);
+    $data["softwareList"] = $softwareData;
+
+    // ゲスト情報取得
+    $guestTable = new Guest($db);
+    $guestData = $guestTable->select([
+        "user_id"=> $_SESSION["userId"]
+    ], "display_name", "asc", "", TRUE);
+    $data["guestList"] = $guestData;
+
+    // ゲストURLが必要なときは表示
+    $data["guestURL"] = $guestURL;
+    
     // Render view
     return $view->render($response, 'mypage/id.twig', $data);
 }
