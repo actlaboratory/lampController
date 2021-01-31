@@ -101,6 +101,7 @@ $app->post("/mypage/id", function (request $request, response $response){
             return showIdConfigView($this->view, $this->db, $response, $message);
         }
         $softwareTable->delete(["user_id"=> $_SESSION["userId"]]);
+        $guestTable->delete(["user_id"=> $_SESSION["userId"]]);
         $sessionTable->delete(["user_id"=> $_SESSION["userId"]]);
         $receiveTable->delete(["user_id"=> $_SESSION["userId"]]);
         $send_queueTable->delete(["user_id"=> $_SESSION["userId"]]);
@@ -110,8 +111,8 @@ $app->post("/mypage/id", function (request $request, response $response){
             "password_hash"=> password_hash($input["newPassword"], PASSWORD_DEFAULT),
             "software_key"=> $softwareKey
         ]);
-        return showIdConfigMessageView($this->view, $response, "パスワードを変更しました。すべてのセッションは切断され、このブラウザもログアウトされました。\nまた、ソフトウェアキーは、以下の値に変更されました。これまでのキーは利用できませんので、再度、ご利用になるLAMPを登録してください。\n\n 新しいソフトウェアキー: ".$softwareKey.
-    "\n\n※ソフトウェアキーは、LAMPがコントローラと通信する場合や、パスワードを忘れた場合などに利用しますので、他人に知られないように十分ご注意ください。また、LAMPがコントローラに登録されたときに自動でダウンロードされます。");
+        return showIdConfigMessageView($this->view, $response, "パスワードを変更しました。すべてのセッションは切断され、ゲストURLも削除されました。\nまた、ソフトウェアキーは、以下の値に変更されました。これまでのキーは利用できませんので、再度、ご利用になるLAMPを登録してください。\n\n 新しいソフトウェアキー: ".$softwareKey.
+    "\n\n※ソフトウェアキーは、LAMPがコントローラと通信するときに利用されますので、他人に知られないように十分ご注意ください。また、LAMPがコントローラに登録されると、自動でダウンロードされます。");
 
     // アカウント削除
     } elseif (!empty($input["userName"]) && !empty($input["deleteConfirmPassword"]) && !empty($input["deleteConfirm"])){

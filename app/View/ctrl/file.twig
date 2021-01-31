@@ -12,7 +12,12 @@
 {% block page_content %}
 
     <div class="container-fluid my-2">
-        <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
+        {% if session.guestId==null %}
+            <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
+        {% else %}
+            <span class="text-right"><p>ようこそ、{{ userDisplayName }}のゲストさん。</p></span>
+        {% endif %}
+
         <div class="row">
             {# ファイル表示エリア　#}
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-2 mx-auto bg-light">
