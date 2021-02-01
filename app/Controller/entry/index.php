@@ -80,6 +80,7 @@ function setUserEntryForm2db($inputData, $db){
         "password_hash"=> password_hash($inputData["password"], PASSWORD_DEFAULT),
         "display_name"=> $inputData["displayName"],
         "software_key"=> $softwareKey,
+        "last_logdin_at"=> time(),
         "last_updated_at"=> time()
     ]);
     if ($result===FALSE){
