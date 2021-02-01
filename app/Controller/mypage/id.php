@@ -109,7 +109,8 @@ $app->post("/mypage/id", function (request $request, response $response){
         $userTable->update([
             "id"=> $_SESSION["userId"],
             "password_hash"=> password_hash($input["newPassword"], PASSWORD_DEFAULT),
-            "software_key"=> $softwareKey
+            "software_key"=> $softwareKey,
+            "last_updated_at"=> time()
         ]);
         return showIdConfigMessageView($this->view, $response, "パスワードを変更しました。すべてのセッションは切断され、ゲストURLも削除されました。\nまた、ソフトウェアキーは、以下の値に変更されました。これまでのキーは利用できませんので、再度、ご利用になるLAMPを登録してください。\n\n 新しいソフトウェアキー: ".$softwareKey.
     "\n\n※ソフトウェアキーは、LAMPがコントローラと通信するときに利用されますので、他人に知られないように十分ご注意ください。また、LAMPがコントローラに登録されると、自動でダウンロードされます。");
