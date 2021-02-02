@@ -7,8 +7,8 @@ use Model\Dao\Informations;
 
 // TOPページのコントローラ
 $app->get('/', function (Request $request, Response $response) {
-
-	$data=[];
+    
+    $data=[];
 
     // Render index view
     return $this->view->render($response, 'top/index.twig', $data);

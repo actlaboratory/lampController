@@ -55,7 +55,7 @@ abstract class Dao {
 	 *
 	 * 情報を取得する汎用SELECT関数
 	 *
-	 * @param array $param WHERE句として指定したい条件を連想配列で指定します。値に%があると、部分一致などもできます
+	 * @param array $param WHERE句として指定したい条件を連想配列で指定します。値に%があると、部分一致などもできます。また、[string(演算子), 数値]で数値比較、NULLで、NULLと比較できます。
 	 * @param string $sort ソートしたいカラム名を指定します
 	 * @param string $order 昇順=ASC 降順=DESCを指定します
 	 * @param int $limit 取得件数を指定します。デフォルト10件
@@ -74,10 +74,14 @@ abstract class Dao {
 
 		//引数の配列からWhere句を生成
 		foreach ($param as $key => $val) {
-			//値があれば処理をする
-			if ($val) {
+			//値があれば値
+			if (!is_array($val) && $val!==NULL) {
 				$queryBuilder->andWhere($key . " LIKE :$key");
 				$queryBuilder->setParameter(":$key", $val);
+			} elseif ($val===NULL){ //NULLを評価
+				$queryBuilder->andWhere($key . " IS NULL");
+			} elseif (count($val)===2 && is_numeric($val[1])){
+				$queryBuilder->andWhere($key . " $val[0] $val[1]");
 			}
 		}
 
@@ -129,10 +133,12 @@ abstract class Dao {
 
 		//引数の配列からWhere句を生成
 		foreach ($param as $key => $val) {
-			//値があれば処理をする
-			if ($val) {
+			//値があれば値
+			if ($val!==NULL) {
 				$queryBuilder->setValue($key, ":$key");
 				$queryBuilder->setParameter(":$key", $val);
+			} else{ //なければNULL
+				$queryBuilder->setValue($key, "NULL");
 			}
 		}
 
@@ -170,8 +176,12 @@ abstract class Dao {
 
 			//id以外の場合
 			if (!in_array($key,$primaryKeys)) {
-				$queryBuilder->set($key, ":$key");
-				$queryBuilder->setParameter(":$key", $val);
+				if ($val!==NULL){ //値を登録
+					$queryBuilder->set($key, ":$key");
+					$queryBuilder->setParameter(":$key", $val);
+				} else{
+					$queryBuilder->set($key, "NULL");
+				}
 			} else {
 				$queryBuilder->where($key."=:$key");
 				$queryBuilder->setParameter(":$key", $val);
@@ -201,9 +211,13 @@ abstract class Dao {
 
 		//引数の配列からWhere句を生成
 		foreach ($param as $key => $val) {
-			if($val){
+			if(!is_array($val) && $val!==NULL){
 				$queryBuilder->andWhere($key."= :$key")
 				->setParameter(":$key", $val);
+			} elseif ($val===NULL){
+				$queryBuilder->andWhere($key." IS NULL");
+			} elseif (count($val)===2 && is_numeric($val[1])){
+				$queryBuilder->andWhere($key." $val[0] $val[1]");
 			}
 		}
 		//クエリ実行

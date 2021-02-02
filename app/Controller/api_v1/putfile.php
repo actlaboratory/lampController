@@ -25,7 +25,8 @@ function json2arrayAndCallFileDatabaseFunction($db, $request, $response){
     $fileTable = new File($db);
     if (!empty($dirTable->select([
         "name"=> key($fileArray[0]),
-        "user_id"=> $_SESSION["userId"]
+        "user_id"=> $_SESSION["userId"],
+        "parent_id"=>NULL
     ]))){
         return ApiUtil::responseErrorJson($response, 400, "already entered");
     }
