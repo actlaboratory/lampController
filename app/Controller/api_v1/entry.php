@@ -3,7 +3,7 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\Dao\User;
-use Model\dao\Software;
+use Model\Dao\Software;
 use Util\ApiUtil;
 use Util\ValidationUtil;
 
