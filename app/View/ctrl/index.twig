@@ -1,5 +1,5 @@
 {% set page_title = "コントローラ" %}
-{% set page_description = "LAMPのコントロールページです。。" %}
+{% set page_description = "LAMPのコントロールページです。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -13,7 +13,7 @@
 
     <div class="container-fluid my-2">
         {% if session.guestId==null %}
-            <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
+            <span class="text-right">ようこそ、{{ userDisplayName }}さん。</span>
         {% else %}
             <span class="text-right"><p>ようこそ、{{ userDisplayName }}のゲストさん。</p></span>
         {% endif %}
@@ -44,7 +44,7 @@
                         <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
                     </div>
                     <div class="row justify-content-center my-2">
-                        <a role="button" class="col-11 btn btn-dark my-2 mx-1", href="{{ get_base_path() }}/ctrl\file">ファイル一覧へ</a>
+                        <a role="button" class="col-11 btn btn-dark my-2 mx-1" href="{{ get_base_path() }}/ctrl/file">ファイル一覧へ</a>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                     setText(albumInfo, jsonData.album);
                     setText(albumArtistInfo, jsonData.albumArtist);
                     setText(pathInfo, jsonData.path);
-                    setText(timeInfo, `${seconds2string(jsonData.playbackTime)} / ${seconds2string(jsonData.length)}`)
+                    setText(timeInfo, seconds2string(jsonData.playbackTime) + " / " + seconds2string(jsonData.length))
                     if (jsonData.status == "playing"){
                         setText(softwareStatus, "再生中");
                     } else if (jsonData.status == "paused"){
@@ -151,11 +151,11 @@
             var hours = Math.floor(sec / 360);
             var minutes = Math.floor((sec % 360) / 60);
             var seconds = sec % 60;
-            return `${hours}:${("00" + minutes).slice(-2)}:${("00" + seconds).slice(-2)}`
+            return hours + ":" + ("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2)
         }
 
         {# 読み込み時に実行 #}
-        window.onload = setInterval(refreshView, 500);
+        window.onload = setInterval(refreshView, 1000);
     </script>
 
     <script src="./scripts/operation.js"></script>

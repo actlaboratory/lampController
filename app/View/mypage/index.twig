@@ -19,7 +19,7 @@
         <p>ようこそ、{{ userDisplayName }}さん。</p>
     </div>
     
-    <div id="messageText"aria-live="assertive" role="alert">
+    <div id="messageText" aria-live="assertive" role="alert">
         {% if message!=null and message!="" %}
             <div class="alert-danger p-3">{{ message | nl2br}}</div>
 	    {% endif %}

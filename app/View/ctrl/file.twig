@@ -1,5 +1,5 @@
-{% set page_title = "コントローラ" %}
-{% set page_description = "LAMPのコントロールページです。。" %}
+{% set page_title = "ファイル一覧" %}
+{% set page_description = "LAMP Controllerのファイル一覧ページです。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -13,7 +13,7 @@
 
     <div class="container-fluid my-2">
         {% if session.guestId==null %}
-            <span class="text-right"><p>ようこそ、{{ userDisplayName }}さん。</p></span>
+            <span class="text-right">ようこそ、{{ userDisplayName }}さん。</span>
         {% else %}
             <span class="text-right"><p>ようこそ、{{ userDisplayName }}のゲストさん。</p></span>
         {% endif %}
@@ -119,16 +119,16 @@
                     if (typeof jsonData["directory"] !== 'undefined') {
                         for (var dir in jsonData["directory"]){
                             if (location.search === ""){
-                                addLinkText(fileList, `{{ get_base_path() }}/ctrl/file?f=${encodeURIComponent(jsonData["directory"][dir])}`, `${jsonData["directory"][dir]}`);
+                                addLinkText(fileList, "{{ get_base_path() }}" + "/ctrl/file?f=" + encodeURIComponent(jsonData["directory"][dir]), jsonData["directory"][dir]);
                             } else{
-                                addLinkText(fileList, `{{ get_base_path() }}/ctrl/file${location.search}/${encodeURIComponent(jsonData["directory"][dir])}`, `${jsonData["directory"][dir]}`);
+                                addLinkText(fileList, "{{ get_base_path() }}" + "/ctrl/file" + location.search + "/" + encodeURIComponent(jsonData["directory"][dir]), jsonData["directory"][dir]);
                             }
                         }
                     }
                     if (typeof jsonData["file"] !== 'undefined') {
                         for (var f in jsonData["file"]){
-                            var path = `${decodeURI(location.search.slice(3))}/${jsonData["file"][f]}`;
-                            addLinkText(fileList, `javascript:operation("file/${path}");`, `${jsonData["file"][f]}`);
+                            var path = decodeURI(location.search.slice(3)) + "/" + jsonData["file"][f];
+                            addLinkText(fileList, 'javascript:operation("file/' + path) + ';', jsonData["file"][f]);
                         }
                     }
                 }
@@ -155,7 +155,7 @@
 
         {# 読み込み時に実行 #}
         window.onload = function(){
-            setInterval(refreshView, 500);
+            setInterval(refreshView, 1000);
             getFileList();
         };
     </script>

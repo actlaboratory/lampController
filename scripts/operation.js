@@ -6,7 +6,8 @@ function operation(name){
     }
     var reqJson = JSON.stringify(reqArray);
     var xhr = new XMLHttpRequest;
-    xhr.open('post', `${basePath}/ctrl/sendoperation`, true);    //(1)
+    var sendoperationURL = basePath + "/ctrl/sendoperation";
+    xhr.open('post', sendoperationURL, true);    //(1)
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(reqJson);
 }
