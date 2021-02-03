@@ -13,7 +13,7 @@ const AUTH_COOKIE_NAME = "LAMP_Controller_auth";
 const CONFIG_COOKIE_NAME = "LAMP_Controller_config";
 
 // API設定
-const API_SEC_INTERVAL = 1;
+const API_SEC_INTERVAL = 2;
 
 // スクリプト設定
 const EXTEND_EXECUTE_TIME_LIMIT = 60;
