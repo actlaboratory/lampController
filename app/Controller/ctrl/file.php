@@ -7,6 +7,7 @@ use Model\Dao\User;
 $app->get("/ctrl/file", function (request $request, response $response){
     if (!empty($request->getQueryParams()["f"])){
         $data = ["filePath"=> $request->getQueryParams()["f"]];
+        $data["filePathR"] = explode("/", $request->getQueryParams()["f"]);
     } else{
         $data = ["filePath"=> ""];
     }

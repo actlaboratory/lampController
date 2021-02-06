@@ -22,6 +22,26 @@
             {# ファイル表示エリア　#}
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-2 mx-auto bg-light">
                 <h2 class="h2 text-center text-light bg-info my-auto">ファイル</h2>
+                {% if filePathR==NULL %}
+                    <div class="bg-warning"><p>OP
+                {% else %}
+                    <div class="bg-warning"><p><a href="{{ get_base_path() }}/ctrl/file">TOP</a>
+                {% endif %}
+                {% set pR = "" %}
+                {% for p in filePathR %}
+                    {% if p!="" %}
+                        {% if loop.last %}
+                            / {{ p }}
+                        {% elseif loop.first %}
+                            {% set pR = pR ~ p|url_encode() %}
+                            / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
+                        {% else %}
+                            {% set pR = pR ~ "/" ~ p|url_encode() %}
+                            / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </p></div>
                 <div class="container-fluid" id="fileList">
                 </div>
             </div>
@@ -128,7 +148,7 @@
                     if (typeof jsonData["file"] !== 'undefined') {
                         for (var f in jsonData["file"]){
                             var path = decodeURI(location.search.slice(3)) + "/" + jsonData["file"][f];
-                            addLinkText(fileList, 'javascript:operation("file/' + path) + ';', jsonData["file"][f]);
+                            addLinkText(fileList, 'javascript:operation("file/' + path + '");', jsonData["file"][f]);
                         }
                     }
                 }
