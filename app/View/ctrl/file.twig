@@ -23,25 +23,26 @@
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-2 mx-auto bg-light">
                 <h2 class="h2 text-center text-light bg-info my-auto">ファイル</h2>
                 {% if filePathR==NULL %}
-                    <div class="bg-warning"><p>OP
+                    <div class="bg-warning"><p>OP</p></div>
                 {% else %}
-                    <div class="bg-warning"><p><a href="{{ get_base_path() }}/ctrl/file">TOP</a>
-                {% endif %}
-                {% set pR = "" %}
-                {% for p in filePathR %}
-                    {% if p!="" %}
-                        {% if loop.last %}
-                            / {{ p }}
-                        {% elseif loop.first %}
-                            {% set pR = pR ~ p|url_encode() %}
-                            / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
-                        {% else %}
-                            {% set pR = pR ~ "/" ~ p|url_encode() %}
-                            / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
+                    <div class="bg-warning px-2"><p><a href="{{ get_base_path() }}/ctrl/file">TOP</a>
+                    {% set pR = "" %}
+                    {% for p in filePathR %}
+                        {% if p!="" %}
+                            {% if loop.last %}
+                                / {{ p }}
+                            {% elseif loop.first %}
+                                {% set pR = pR ~ p|url_encode() %}
+                                / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
+                            {% else %}
+                                {% set pR = pR ~ "/" ~ p|url_encode() %}
+                                / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
-                </p></div>
+                    {% endfor %}
+                    </p></div>
+                    <div class="text-right"><button class="btn btn-dark text-white mt-0 mb-4 py-0" onclick="operation('playlist/{{ filePath }}');">ここから先をプレイリストに追加</button></div>
+                {% endif %}
                 <div class="container-fluid" id="fileList">
                 </div>
             </div>
