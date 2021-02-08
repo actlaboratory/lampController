@@ -32,10 +32,8 @@ function entrySoftwareFromJson($request, $response, $db){
     
     // ソフトウェア重複チェック
     $software = $softwareTable->select(["drive_serial_no"=>$softwareArray["driveSerialNo"], "pc_name"=>$softwareArray["pcName"]]);
-    if (!$software===FALSE){
-        return ApiUtil::responseErrorJson($response, 400, "already entered");
-    }
-    
+
+   
     // PC名、ドライブシリアルチェック
     if (!empty(ValidationUtil::checkString("pcName", $softwareArray["pcName"])) || !is_int($softwareArray["driveSerialNo"])){
         return ApiUtil::responseErrorJson($response, 400, "invalid pc information");
@@ -47,17 +45,34 @@ function entrySoftwareFromJson($request, $response, $db){
     }
     
     // ソフトウェア登録
-    $softwareTable->insert([
-        "drive_serial_no"=>$softwareArray["driveSerialNo"],
-        "pc_name"=>$softwareArray["pcName"],
-        "display_name"=>$softwareArray["displayName"],
-        "user_id"=>$user["id"],
-        "entered_at"=>time()
-    ]);
-    $response->withHeader("Content-Type", "application/json");
-    return $response->getBody()->write(json_encode([
-        "code"=>200,
-        "status"=>"success",
-        "softwareKey"=>$user["software_key"]
-    ]));
+    if (!empty($software)){ //更新
+        $softwareTable->update([
+            "id"=> $software["id"],
+            "drive_serial_no"=>$softwareArray["driveSerialNo"],
+            "pc_name"=>$softwareArray["pcName"],
+            "display_name"=>$softwareArray["displayName"],
+            "user_id"=>$user["id"],
+            "entered_at"=>time()
+        ]);
+        $response->withHeader("Content-Type", "application/json");
+        return $response->getBody()->write(json_encode([
+            "code"=>200,
+            "status"=>"overwrite success",
+            "softwareKey"=>$user["software_key"]
+        ]));
+    } else{ //新規
+        $softwareTable->insert([
+            "drive_serial_no"=>$softwareArray["driveSerialNo"],
+            "pc_name"=>$softwareArray["pcName"],
+            "display_name"=>$softwareArray["displayName"],
+            "user_id"=>$user["id"],
+            "entered_at"=>time()
+        ]);
+        $response->withHeader("Content-Type", "application/json");
+        return $response->getBody()->write(json_encode([
+            "code"=>200,
+            "status"=>"success",
+            "softwareKey"=>$user["software_key"]
+        ]));
+    }
 }
