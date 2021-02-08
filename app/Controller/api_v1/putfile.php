@@ -6,6 +6,7 @@ use Model\Dao\User;
 use Model\Dao\Directory;
 use Model\Dao\File;
 use Util\ApiUtil;
+use Util\FileUtil;
 
 // キーとファイル階層のJSONを受け取る
 $app->post("/api/v1/putfile", function (request $request, Response $response){
@@ -23,12 +24,21 @@ function json2arrayAndCallFileDatabaseFunction($db, $request, $response){
     }
     $dirTable = new Directory($db);
     $fileTable = new File($db);
-    if (!empty($dirTable->select([
+    $dirData = $dirTable->select([
         "name"=> key($fileArray[0]),
         "user_id"=> $_SESSION["userId"],
         "parent_id"=>NULL
-    ]))){
-        return ApiUtil::responseErrorJson($response, 400, "already entered");
+    ]);
+    if (!empty($dirData)){
+        if ($data["overWrite"]===TRUE){
+            set_time_limit(EXTEND_EXECUTE_TIME_LIMIT * 10);
+            FileUtil::deleteDirectoryFromId($dirData["id"], $db);
+            set_time_limit(EXTEND_EXECUTE_TIME_LIMIT);
+            array2fileDatabase($fileArray, $dirTable, $fileTable, NULL, $_SESSION["userId"]);
+            return ApiUtil::responseSuccessJson($response);
+        } else{
+            return ApiUtil::responseErrorJson($response, 400, "already entered");
+        }
     }
     set_time_limit(EXTEND_EXECUTE_TIME_LIMIT);
     array2fileDatabase($fileArray, $dirTable, $fileTable, NULL, $_SESSION["userId"]);

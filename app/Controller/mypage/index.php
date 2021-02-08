@@ -8,6 +8,7 @@ use Model\Dao\Software;
 use Model\Dao\Directory;
 use Util\SessionUtil;
 use Util\ValidationUtil;
+use Util\FileUtil;
 
 $app->get("/mypage", function (request $request, response $response){
     // マイページ表示
@@ -64,7 +65,7 @@ $app->post("/mypage", function (request $request, response $response){
     // フォルダ削除
     if (!empty($input["directory"])){
         set_time_limit(EXTEND_EXECUTE_TIME_LIMIT * 10);
-        deleteDirectoryFromId($input["directory"], $this->db);
+        FileUtil::deleteDirectoryFromId($input["directory"], $this->db);
         $message = "フォルダを削除しました。\nブラウザの戻る機能を利用する場合は、移動先のページを再読み込みしてください。";
     }
     
@@ -105,34 +106,4 @@ function showMypage($view, $db, $response, $message=""){
 
     // Render view
     return $view->render($response, 'mypage/index.twig', $data);
-}
-
-function deleteDirectoryFromId($id, $db, $parentId=NULL){
-    $dirTable = new Directory($db);
-    if ($id===NULL){
-        $dirData = $dirTable->select([
-            "parent_id"=> $parentId
-        ], "", "ASC", "", TRUE);
-    } else{
-        $dirData = $dirTable->select([
-            "id"=> $id,
-            "user_id"=> $_SESSION["userId"]
-        ]);
-        if (!empty($dirData)){
-            deleteDirectoryFromId(NULL, $db, $dirData["id"]);
-            $dirTable->delete([
-              "id"=> $dirData["id"]
-            ]);
-            return TRUE;
-        }
-    }
-    if (empty($dirData)){
-        return TRUE;
-    }
-    foreach($dirData as $d){
-        deleteDirectoryFromId(NULL, $db, $d["id"]);
-        $dirTable->delete([
-            "id"=> $d["id"]
-        ]);
-    }
 }

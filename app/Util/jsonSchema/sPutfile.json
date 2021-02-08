@@ -30,6 +30,9 @@
         },
         "file": {
             "$ref": "#definitions/directory"
+        },
+        "overWrite": {
+            "type": "boolean"
         }
     },
     "required": ["apiVersion", "authentication", "file"],
