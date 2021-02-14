@@ -13,9 +13,9 @@
 
     <div class="container-fluid my-2">
         {% if session.guestId==null %}
-            <span class="text-right">ようこそ、{{ userDisplayName }}さん。</span>
+            <div class="text-right my-1">ようこそ、{{ userDisplayName }}さん。</div>
         {% else %}
-            <span class="text-right"><p>ようこそ、{{ userDisplayName }}のゲストさん。</p></span>
+            <div class="text-right my-1">ようこそ、{{ userDisplayName }}のゲストさん。</div>
         {% endif %}
         
         <div class="row">
@@ -51,7 +51,7 @@
             
             {# 情報表示エリア #}
             <div class="col-lg-9 col-md-7 col-sm-6 col-12 mx-auto bg-light">
-                <h2 class="h2 text-center text-light bg-info my-auto">情報</h2>
+                <h2 class="h2 text-center text-light bg-info mt-auto mb-3">情報</h2>
                 <div class="container-fluid">
                     <div class="row mb-1">
                         <div class="col-flex mr-3"><p>タイトル</p></div>
