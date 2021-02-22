@@ -10,13 +10,11 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{ get_base_path() }}/">TOP</a>
 						</li>
-						<li class="d-sm-none nav-item">
-							{% if session.id==NULL %}
+						{% if session.id==NULL %}
+							<li class="d-sm-none nav-item">
 								<a class="nav-link" href="{{ get_base_path() }}/login">ログイン</a>
-							{% else %}
-								<a class="nav-link" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
-							{% endif %}
-						</li>
+							</li>
+						{% endif %}
 						{% if session.id!=NULL %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ get_base_path() }}/ctrl">コントローラ</a>
@@ -33,6 +31,11 @@
 						{% if session.id==NULL %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ get_base_path() }}/entry">ユーザー登録</a>
+							</li>
+						{% endif %}
+						{% if session.id!=NULL %}
+							<li class="d-sm-none nav-item">
+								<a class="nav-link" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
 							</li>
 						{% endif %}
 					</ul>
