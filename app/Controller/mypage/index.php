@@ -27,7 +27,7 @@ $app->post("/mypage", function (request $request, response $response){
     // 操作LAMP変更
     if (!empty($input["defaultLamp"])){
         SessionUtil::setCookie(CONFIG_COOKIE_NAME, $input["defaultLamp"]);
-    $_SESSION["defaultLamp"] = $input["defaultLamp"];
+        $_SESSION["defaultLamp"] = $input["defaultLamp"];
         $message = "捜査対象のLAMPを設定しました。\nブラウザの戻る機能を利用する場合は、移動先のページを再読み込みしてください。";
     }
 

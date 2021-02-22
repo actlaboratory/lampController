@@ -53,9 +53,31 @@
                     <div class="row bg-info justify-content-center">
                         <h2 id="softwareStatus" class="h2 text-light my-auto">読み込み中</h2>
                     </div>
-                    <div class="row justify-content-center my-1">
-                        <h3 class="h4 mb-1">CONTROLLER</h3>
-                    </div>
+                    {% if session.guestId==NULL %}
+                        <form method="post" autocomplete="off">
+                            <div class="row my-1">
+                                <div class="col-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" required>
+                                    <option value="">LAMPを選択</option>
+                                    {% for s in softwareList %}
+                                        {% if session.defaultLamp == s.id %}
+                                            <option value="{{ s.id }}" selected>{{ s.display_name }}</option>
+                                        {% else %}
+                                            <option value="{{ s.id }}">{{ s.display_name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select></div>
+                                <div class="col mx-0 px-0 text-right"><input type="submit" class="button btn-dark text-white my-0 mx-0 px-0 py-0" value="切替"></div>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="row my-1"><div class="col-12 text-center">
+                            {% for s in softwareList %}
+                                {% if session.defaultLamp == s.id %}
+                                    {{ s.display_name }}
+                                {% endif %}
+                            {% endfor %}
+                        </div></div>
+                    {% endif %}
                     <div class="row justify-content-center mt-1 mb-2">
                         <button type="button" id="playButton" class="col-12 btn btn-dark my-2 mx-auto" onclick="operation('play');">再生 / 一時停止</button>
                     </div>
