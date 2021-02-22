@@ -28,7 +28,7 @@
                     {% if session.guestId==NULL %}
                         <form method="post" autocomplete="off">
                             <div class="row my-1">
-                                <div class="col-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" required>
+                                <div class="col-9 col-md-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" required>
                                     <option value="">LAMPを選択</option>
                                     {% for s in softwareList %}
                                         {% if session.defaultLamp == s.id %}
@@ -38,7 +38,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </select></div>
-                                <div class="col mx-0 px-0 text-right"><input type="submit" class="button btn-dark text-white my-0 mx-0 px-0 py-0" value="切替"></div>
+                                <div class="col mx-0 px-0 text-right"><input type="submit" class="button btn-dark text-white my-0 mx-0 px-1 py-0" value="切替"></div>
                             </div>
                         </form>
                     {% else %}
@@ -54,19 +54,36 @@
                         <button type="button" id="playButton" class="col-12 btn btn-dark my-2 mx-auto" onclick="operation('play');">再生 / 一時停止</button>
                     </div>
                     <div class="row my-2 justify-content-center">
-                        <div class="col-4 px-1 text-center"><button type="button" id="previousButton" class="btn btn-dark mx-auto px-3" onclick="operation('previous');">前へ</button></div>
-                        <div class="col-4 px-1 text-center"><button type="button" id="stopButton" class="btn btn-dark mx-auto px-3" onclick="operation('stop');">停止</button></div>
-                        <div class="col-4 px-1 text-center"><button type="button" id="nextButton" class="btn btn-dark mx-auto px-3" onclick="operation('next');">次へ</button></div>
+                        <div class="col-4 px-1 text-center"><button type="button" id="previousButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('previous');">前へ</button></div>
+                        <div class="col-4 px-1 text-center"><button type="button" id="stopButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('stop');">停止</button></div>
+                        <div class="col-4 px-1 text-center"><button type="button" id="nextButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('next');">次へ</button></div>
                     </div>
                     <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
                         <span class="text-light py-1">音量</span>
                     </div>
-                    <div class="row bg-primary mt-0 mb-2 justify-content-center">
+                    <div class="row bg-primary mt-0 mb-3 justify-content-center">
                         <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる" onclick="operation('volumeDown');">DOWN</button>
                         <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
                     </div>
-                    <div class="row justify-content-center my-2">
-                        <a role="button" class="col-11 btn btn-dark my-2 mx-1" href="{{ get_base_path() }}/ctrl/file">ファイル一覧へ</a>
+                    
+                    {# 再生モード #}
+                    <div class="row bg-info justify-content-center mt-4 mb-1">
+                        <h3 class="h2 text-light my-auto">再生モード</h3>
+                    </div>
+                    <div class="row mt-2 mb-1 px-2">
+                        <div class="col-7 px-0"><button type="button" id="repeatLoopButton" class="btn btn-dark mx-auto px-4 px-sm-1" onclick="operation('repeatLoop');">リピート/ループ</button></div>
+                        <div class="col-5 px-0 text-right"><button type="button" id="shuffleButton" class="btn btn-dark mx-auto px-4 px-sm-1" onclick="operation('shuffle');">シャッフル</button></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">リピート / ループ</div>
+                        <div class="col-5" id="repeatLoopStatus"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">シャッフル</div>
+                        <div class="col-5" id="shuffleStatus"></div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <a role="button" class="col-11 btn btn-dark mx-1" href="{{ get_base_path() }}/ctrl/file">ファイル一覧へ</a>
                     </div>
                 </div>
             </div>
@@ -125,7 +142,9 @@
             var albumArtistInfo = document.getElementById("albumArtistInfo");
             var timeInfo = document.getElementById("timeInfo");
             var pathInfo = document.getElementById("pathInfo");
-            var softwareStatus = document.getElementById("softwareStatus")
+            var softwareStatus = document.getElementById("softwareStatus");
+            var repeatLoopStatus = document.getElementById("repeatLoopStatus");
+            var shuffleStatus = document.getElementById("shuffleStatus");
             
             {# JSONを送ってJSONをもらう #}
             var reqJson = JSON.stringify({
@@ -152,6 +171,23 @@
                     } else{
                         setText(softwareStatus, "未接続");
                     }
+                    if (jsonData.repeatLoop == "off"){
+                        setText(repeatLoopStatus, "オフ");
+                    } else if (jsonData.repeatLoop == "repeat"){
+                        setText(repeatLoopStatus, "リピート");
+                    } else if (jsonData.repeatLoop == "loop"){
+                        setText(repeatLoopStatus, "ループ");
+                    } else{
+                        setText(repeatLoopStatus, "");
+                    }
+                    if (jsonData.shuffle == "off"){
+                        setText(shuffleStatus, "オフ");
+                    } else if (jsonData.shuffle == "on"){
+                        setText(shuffleStatus, "オン");
+                    } else{
+                        setText(shuffleStatus, "");
+                    }
+
                 }
             };
             xhr.open('post', "{{ get_base_path() }}/ctrl/getstatus", true);    //(1)

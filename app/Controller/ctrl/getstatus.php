@@ -42,6 +42,8 @@ $app->post("/ctrl/getstatus", function (request $request, response $response){
         "playbackTime"=> $dataStatus["playbackTime"],
         "time"=> $receiveData["time"],
         "length"=> $dataStatus["fileLength"],
+        "shuffle"=> $dataStatus["shuffle"],
+        "repeatLoop"=> $dataStatus["repeatLoop"],
         "status"=> htmlspecialchars($dataStatus["playbackStatus"])
     ]));
 });
@@ -57,6 +59,8 @@ function receiveDisconnectJson($response){
         "playbackTime"=> 0,
         "time"=> 0,
         "length"=> 0,
+        "shuffle"=> "",
+        "repeatLoop"=> "",
         "status"=> "disconnected"
     ];
     $response->withHeader("Content-Type", "application/json");
