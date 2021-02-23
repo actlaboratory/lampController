@@ -1,5 +1,5 @@
-{% set page_title = "ファイル一覧" %}
-{% set page_description = "LAMP Controllerのファイル一覧ページです。" %}
+{% set page_title = "コントローラ" %}
+{% set page_description = "LAMPのコントロールページです。" %}
 
 {#レイアウト継承#}
 {% extends "layout/layout.twig" %}
@@ -15,44 +15,10 @@
         {% if session.guestId==null %}
             <div class="text-right my-1">ようこそ、{{ userDisplayName }}さん。</div>
         {% else %}
-            <span class="text-right"><p>ようこそ、{{ userDisplayName }}のゲストさん。</p></span>
+            <div class="text-right my-1">ようこそ、{{ userDisplayName }}のゲストさん。</div>
         {% endif %}
-
+        
         <div class="row">
-            {# ファイル表示エリア　#}
-            <div class="col-lg-9 col-md-7 col-sm-6 col-12 order-sm-2 mx-auto bg-light">
-                <h2 class="h2 text-center text-light bg-info my-0">ファイル</h2>
-                {% if filePathR==NULL %}
-                    <div class="bg-warning"><p>TOP</p></div>
-                    <div class="text-right mt-0 mb-3">
-                        <button class="btn btn-dark text-white py-1 px-2 my-1" onclick="operation('clearAllLists');">リストクリア</button>
-                    </div>
-                {% else %}
-                    <div class="bg-warning px-2"><p><a href="{{ get_base_path() }}/ctrl/file">TOP</a>
-                    {% set pR = "" %}
-                    {% for p in filePathR %}
-                        {% if p!="" %}
-                            {% if loop.last %}
-                                / {{ p }}
-                            {% elseif loop.first %}
-                                {% set pR = pR ~ p|url_encode() %}
-                                / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
-                            {% else %}
-                                {% set pR = pR ~ "/" ~ p|url_encode() %}
-                                / <a href="{{ get_base_path() }}/ctrl/file?f={{ pR }}">{{ p }}</a>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    </p></div>
-                    <div class="text-right mt-0 mb-3">
-                        <button class="btn btn-dark text-white px-1 py-1 my-1" onclick="operation('clearAllLists');">リストクリア</button>
-                        <button class="btn btn-dark text-white px-1 py-1 my-1" onclick="operation('playlist/{{ filePath }}');">この先をプレイリストへ</button>
-                    </div>
-                {% endif %}
-                <div class="container-fluid" id="fileList">
-                </div>
-            </div>
-            
             {# 操作エリア　#}
             <div class="col-lg-3 col-md-5 col-sm-6 col-12 mx-auto px-1">
                 <div class="container fluid">
@@ -117,10 +83,43 @@
                         <div class="col-5" id="shuffleStatus"></div>
                     </div>
                     <div class="row justify-content-center my-3">
-                        <a role="button" class="col-11 btn btn-dark mx-1" href="{{ get_base_path() }}/ctrl">コントローラへ</a>
+                        <a role="button" class="col-11 btn btn-dark mx-1" href="{{ get_base_path() }}/ctrl/file">ファイル一覧へ</a>
                     </div>
                 </div>
             </div>
+            
+            {# 情報表示エリア #}
+            <div class="col-lg-9 col-md-7 col-sm-6 col-12 mx-auto bg-light">
+                <h2 class="h2 text-center text-light bg-info mt-auto mb-3">情報</h2>
+                <div class="container-fluid">
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>タイトル</p></div>
+                        <div class="col-flex"><p id="titleInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アーティスト</p></div>
+                        <div class="col-flex"><p id="artistInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アルバム</p></div>
+                        <div class="col-flex"><p id="albumInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>アルバムアーティスト</p></div>
+                        <div class="col-flex"><p id="albumArtistInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>時間</p></div>
+                        <div class="col-flex"><p id="timeInfo"></p></div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-flex mr-3"><p>場所</p></div>
+                        <div class="col-flex"><p id="pathInfo"></p></div>
+                    </div>
+                </div>
+            </div>
+            
+            {# 操作パネルエリア　#}
         </div>
     </div>
 
@@ -133,14 +132,20 @@
         {% else %}
             var softwareId = null;
         {% endif %}
-
-        {# エレメントを取得 #}
-        var softwareStatus = document.getElementById("softwareStatus")
-        var repeatLoopStatus = document.getElementById("repeatLoopStatus");
-        var shuffleStatus = document.getElementById("shuffleStatus");
         
         {# ビューのリアルタイム更新 #}
         function refreshView(){
+            {# エレメントを取得 #}
+            var titleInfo = document.getElementById("titleInfo");
+            var artistInfo = document.getElementById("artistInfo");
+            var albumInfo = document.getElementById("albumInfo");
+            var albumArtistInfo = document.getElementById("albumArtistInfo");
+            var timeInfo = document.getElementById("timeInfo");
+            var pathInfo = document.getElementById("pathInfo");
+            var softwareStatus = document.getElementById("softwareStatus");
+            var repeatLoopStatus = document.getElementById("repeatLoopStatus");
+            var shuffleStatus = document.getElementById("shuffleStatus");
+            
             {# JSONを送ってJSONをもらう #}
             var reqJson = JSON.stringify({
                 "sessionId": "{{ session.id }}",
@@ -151,6 +156,12 @@
                 var res = xhr.responseText;
                 if (res.length>0){
                     var jsonData = JSON.parse(res);
+                    setText(titleInfo, jsonData.title);
+                    setText(artistInfo, jsonData.artist);
+                    setText(albumInfo, jsonData.album);
+                    setText(albumArtistInfo, jsonData.albumArtist);
+                    setText(pathInfo, jsonData.path);
+                    setText(timeInfo, seconds2string(jsonData.playbackTime) + " / " + seconds2string(jsonData.length))
                     if (jsonData.status == "playing"){
                         setText(softwareStatus, "再生中");
                     } else if (jsonData.status == "paused"){
@@ -176,6 +187,7 @@
                     } else{
                         setText(shuffleStatus, "");
                     }
+
                 }
             };
             xhr.open('post', "{{ get_base_path() }}/ctrl/getstatus", true);    //(1)
@@ -183,68 +195,28 @@
             xhr.send(reqJson);
         };
 
-        {# ファイル一覧構成 #}
-        function getFileList(){
-            {# エレメントを取得 #}
-            var fileList = document.getElementById("fileList")
-            
-            {# JSONを送ってJSONをもらう #}
-            var reqJson = JSON.stringify({
-                "sessionId": "{{ session.id }}",
-                "filePath": "{{ filePath }}"
-            });
-            var xhr = new XMLHttpRequest;
-            xhr.onload = function(){
-                var res = xhr.responseText;
-                if (res.length>0){
-                    var jsonData = JSON.parse(res);
-                    
-                    // 書き込み
-                    if (typeof jsonData["directory"] !== 'undefined') {
-                        for (var dir in jsonData["directory"]){
-                            if (location.search === ""){
-                                addLinkText(fileList, "{{ get_base_path() }}" + "/ctrl/file?f=" + encodeURIComponent(jsonData["directory"][dir]), jsonData["directory"][dir]);
-                            } else{
-                                addLinkText(fileList, "{{ get_base_path() }}" + "/ctrl/file" + location.search + "/" + encodeURIComponent(jsonData["directory"][dir]), jsonData["directory"][dir]);
-                            }
-                        }
-                    }
-                    if (typeof jsonData["file"] !== 'undefined') {
-                        for (var f in jsonData["file"]){
-                            var path = decodeURI(location.search.slice(3)) + "/" + jsonData["file"][f];
-                            addLinkText(fileList, 'javascript:operation("file/' + path + '");', jsonData["file"][f]);
-                        }
-                    }
-                }
-            };
-            xhr.open('post', "{{ get_base_path() }}/ctrl/getfilelist", true);    //(1)
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(reqJson);
-        };
-
-        function addLinkText(parent, href, text){
-            var pElement = document.createElement("p");
-            var newElement = document.createElement("a");
-            newElement.textContent = text;
-            newElement.href = href;
-            pElement.appendChild(newElement);
-            parent.appendChild(pElement);
-        }
-        
         function setText(element, text){
             if (element.innerText != text){
                 element.innerText = text;
             }
         }
 
+        function seconds2string(sec){
+            if (sec < 0){
+                return 0;
+            }
+            sec = Math.floor(sec);
+            var hours = Math.floor(sec / 360);
+            var minutes = Math.floor((sec % 360) / 60);
+            var seconds = sec % 60;
+            return hours + ":" + ("00" + minutes).slice(-2) + ":" + ("00" + seconds).slice(-2)
+        }
+
         {# 読み込み時に実行 #}
-        window.onload = function(){
-            setInterval(refreshView, 1000);
-            getFileList();
-        };
+        window.onload = setInterval(refreshView, 1000);
     </script>
 
-    <script src="../scripts/operation.js"></script>
+    <script src="./scripts/operation.js"></script>
 {% endautoescape %}
 
 

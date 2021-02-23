@@ -1,0 +1,46 @@
+{% set page_title = "ログアウト" %}
+{% set page_description = "LAMP Controllerからログアウト。" %}
+
+{#レイアウト継承#}
+{% extends "layout/layout.twig" %}
+
+{# スタイルシートの追加 #}
+{% block header_scripts_add %}
+{% endblock %}
+
+{# ページ本文 #}
+{% block page_content %}
+
+    <div class="jumbotron text-center">
+        <h2>ログアウト</h2>
+    </div>
+
+    <div class="h3 text-center">
+        <p class="h3">ログアウトしました。ご利用、ありがとうございました。</p>
+    </div>
+    
+    <div id="messageText" aria-live="assertive"><div></div></div>
+    
+    <div class="text-center">
+        <a class="btn btn-success my-5" href="{{ get_base_path() }}/" role="button">トップへ</a>
+    </div>
+
+    <script>
+        {# ここからのブラウザバック禁止 #}
+        var messageText = document.getElementById("messageText");
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function(e){
+            var newElement = document.createElement("div");
+            newElement.className = "alert-danger p-3";
+            newElement.textContent = "この画面では、ブラウザの戻る機能はは利用できません。";
+            messageText.replaceChild(newElement, messageText.firstChild);
+            history.go(1);
+        });
+    </script>
+
+
+{% endblock %}
+
+{# フッダ以降に追加する内容 #}
+{% block footer_scripts_add %}
+{% endblock %}
