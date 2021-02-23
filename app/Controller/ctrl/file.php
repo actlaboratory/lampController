@@ -2,6 +2,7 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Util\SessionUtil;
 use Model\Dao\User;
 use Model\Dao\Software;
 

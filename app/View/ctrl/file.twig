@@ -24,6 +24,9 @@
                 <h2 class="h2 text-center text-light bg-info my-0">ファイル</h2>
                 {% if filePathR==NULL %}
                     <div class="bg-warning"><p>TOP</p></div>
+                    <div class="text-right mt-0 mb-3">
+                        <button class="btn btn-dark text-white py-1 px-2 my-1" onclick="operation('clearAllLists');">リストクリア</button>
+                    </div>
                 {% else %}
                     <div class="bg-warning px-2"><p><a href="{{ get_base_path() }}/ctrl/file">TOP</a>
                     {% set pR = "" %}
@@ -41,7 +44,10 @@
                         {% endif %}
                     {% endfor %}
                     </p></div>
-                    <div class="text-right"><button class="btn btn-dark text-white mt-0 mb-4 py-0" onclick="operation('playlist/{{ filePath }}');">ここから先をプレイリストに追加</button></div>
+                    <div class="text-right mt-0 mb-3">
+                        <button class="btn btn-dark text-white px-1 py-1 mx-0 my-1" onclick="operation('clearAllLists');">リストクリア</button>
+                        <button class="btn btn-dark text-white px-1 py-1 mx-1 my-1" onclick="operation('playlist/{{ filePath }}');">ここから先をプレイリストへ</button>
+                    </div>
                 {% endif %}
                 <div class="container-fluid" id="fileList">
                 </div>
