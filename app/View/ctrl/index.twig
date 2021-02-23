@@ -28,7 +28,7 @@
                     {% if session.guestId==NULL %}
                         <form method="post" autocomplete="off">
                             <div class="row my-1">
-                                <div class="col-9 col-md-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" required>
+                                <div class="col-9 col-md-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" aria-label="操作対象のLAMP" required>
                                     <option value="">LAMPを選択</option>
                                     {% for s in softwareList %}
                                         {% if session.defaultLamp == s.id %}
