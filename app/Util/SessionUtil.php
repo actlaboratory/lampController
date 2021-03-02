@@ -56,6 +56,13 @@ class SessionUtil{
         if (empty($userData)){
             return FALSE;
         }
+        
+        // ログイン日時更新
+        $userTable->update([
+            "id"=> $userData["id"],
+            "last_logdin_at"=> time()
+        ]);
+        
         $_SESSION["id"] = $sessionData["session_id"];
         $_SESSION["userId"] = $userData["id"];
 
