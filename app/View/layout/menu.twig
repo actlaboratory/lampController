@@ -7,39 +7,39 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNavDropdown">
 					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="{{ get_base_path() }}/">TOP</a>
+						<li class="nav-item ">
+							<a class="nav-link text-white" href="{{ get_base_path() }}/">TOP</a>
 						</li>
 						{% if session.id==NULL %}
 							<li class="d-sm-none nav-item">
-								<a class="nav-link" href="{{ get_base_path() }}/login">ログイン</a>
+								<a class="nav-link text-white" href="{{ get_base_path() }}/login">ログイン</a>
 							</li>
 						{% endif %}
 						{% if session.id!=NULL %}
 							<li class="nav-item">
-								<a class="nav-link" href="{{ get_base_path() }}/ctrl">コントローラ</a>
+								<a class="nav-link text-white" href="{{ get_base_path() }}/ctrl">コントローラ</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{{ get_base_path() }}/ctrl/file">ファイル一覧</a>
+								<a class="nav-link text-white" href="{{ get_base_path() }}/ctrl/file">ファイル一覧</a>
 							</li>
 							{% if session.guestId==NULL %}
 								<li class="nav-item">
-									<a class="nav-link" href="{{ get_base_path() }}/mypage">マイページ</a>
+									<a class="nav-link text-white" href="{{ get_base_path() }}/mypage">マイページ</a>
 								</li>
 							{% endif %}
 						{% endif %}
 						{% if session.id==NULL %}
 							<li class="nav-item">
-								<a class="nav-link" href="{{ get_base_path() }}/entry">ユーザー登録</a>
+								<a class="nav-link text-white" href="{{ get_base_path() }}/entry">ユーザー登録</a>
 							</li>
 						{% endif %}
 						{% if session.id!=NULL %}
 							<li class="d-sm-none nav-item">
-								<a class="nav-link" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
+								<a class="nav-link text-white" href="{{ get_base_path() }}/ctrl/logout">ログアウト</a>
 							</li>
 						{% endif %}
 						<li class="nav-item">
-							<a class="nav-link" href="{{ get_base_path() }}/help">ヘルプ</a>
+							<a class="nav-link text-white" href="{{ get_base_path() }}/help">ヘルプ</a>
 						</li>
 					</ul>
 				</div>

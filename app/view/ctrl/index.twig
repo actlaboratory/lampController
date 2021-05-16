@@ -27,8 +27,8 @@
                     </div>
                     {% if session.guestId==NULL %}
                         <form method="post" autocomplete="off">
-                            <div class="row my-1">
-                                <div class="col-9 col-md-10 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" aria-label="操作対象のLAMP" required>
+                            <div class="row my-1 h3">
+                                <div class="col-9 mx-0 px-0 my-auto"><select class="w-100" name="defaultLamp" aria-label="操作対象のLAMP" required>
                                     <option value="">LAMPを選択</option>
                                     {% for s in softwareList %}
                                         {% if session.defaultLamp == s.id %}
@@ -50,36 +50,30 @@
                             {% endfor %}
                         </div></div>
                     {% endif %}
-                    <div class="row justify-content-center mt-1 mb-2">
-                        <button type="button" id="playButton" class="col-12 btn btn-dark my-2 mx-auto" onclick="operation('play');">再生 / 一時停止</button>
-                    </div>
+
                     <div class="row my-2 justify-content-center">
-                        <div class="col-4 px-1 text-center"><button type="button" id="previousButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('previous');">前へ</button></div>
-                        <div class="col-4 px-1 text-center"><button type="button" id="stopButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('stop');">停止</button></div>
-                        <div class="col-4 px-1 text-center"><button type="button" id="nextButton" class="btn btn-dark mx-auto px-4 px-sm-3" onclick="operation('next');">次へ</button></div>
+						<div class="col-3 mx-0 px-2 pr-sm-1 pl-0 text-center"><button type="button" id="previousButton" class="btn btn-dark p-0 w-100" onclick="operation('previous');"><img src="/lampcontroller/public/back.gif" class="w-100" alt="前へ"></button></div>
+                        <div class="col-3 mx-0 px-2 pr-sm-1 pl-0 text-center"><button type="button" id="playButton"     class="btn btn-dark p-0 w-100" onclick="operation('play');"><img src="/lampcontroller/public/play.gif" class="bordar-none w-100" alt="再生/一時停止" id="playButtonImage"></button></div>
+                        <div class="col-3 mx-0 px-2 pr-sm-1 pl-0 text-center"><button type="button" id="nextButton"     class="btn btn-dark p-0 w-100" onclick="operation('next');"><img src="/lampcontroller/public/next.gif" class="w-100" alt="次へ"></button></div>
+                        <div class="col-3 mx-0 px-2 pr-sm-1 pl-0 text-center"><button type="button" id="stopButton"     class="btn btn-dark p-0 w-100" onclick="operation('stop');"><img src="/lampcontroller/public/stop.gif" class="w-100" alt="停止"></button></div>
                     </div>
-                    <div class="row bg-primary justify-content-center mt-3 mb-" aria-hidden="true">
-                        <span class="text-light py-1">音量</span>
+
+                    <div class="row justify-content-left h2">
+						<div class="col-4 p-0 pl-3 py-0 ml-0"><img src="/lampcontroller/public/volume_cut.gif" alt="" class="h-100 py-0 mx-0"></div>
+                        <div class="col-4 p-0 m-0"><button type="button" id="volumeDownButton" class="btn btn-dark mx-1 py-0 h2 my-0 px-4 px-sm-3" aria-label="音量を下げる" onclick="operation('volumeDown');"><span class="h2 px-2">－</span></button></div>
+                        <div class="col-4 p-0 m-0"><button type="button" id="volumeUpButton"   class="btn btn-dark mx-1 py-0 h2 my-0 px-4 px-sm-3" aria-label="音量を上げる" onclick="operation('volumeUp');"><span class="h2 px-2 ">＋</span></button></div>
                     </div>
-                    <div class="row bg-primary mt-0 mb-3 justify-content-center">
-                        <button type="button" id="volumeDownButton" class="col-5 btn btn-dark mx-2" aria-label="音量を下げる" onclick="operation('volumeDown');">DOWN</button>
-                        <button type="button" id="volumeUpButton" class="col-5 btn btn-dark mx-2" aria-label="音量を上げる" onclick="operation('volumeUp');">UP</button>
-                    </div>
-                    
+
                     {# 再生モード #}
-                    <div class="row bg-info justify-content-center mt-4 mb-1">
+                    <div class="row bg-info justify-content-center mt-4 mb-1" style="height: 0px;">
                         <h3 class="h2 text-light my-auto">再生モード</h3>
                     </div>
                     <div class="row mt-2 mb-1 px-2">
-                        <div class="col-7 px-0"><button type="button" id="repeatLoopButton" class="btn btn-dark mx-auto px-3 px-sm-1" onclick="operation('repeatLoop');">リピート/ループ</button></div>
-                        <div class="col-5 px-0 text-right"><button type="button" id="shuffleButton" class="btn btn-dark mx-auto px-3 px-sm-1" onclick="operation('shuffle');">シャッフル</button></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-7">リピート / ループ</div>
+                        <div class="col-7 px-0"><button type="button" id="repeatLoopButton" class="btn btn-dark mx-auto px-3 px-sm-1 w-100" onclick="operation('repeatLoop');">リピート/ループ</button></div>
                         <div class="col-5" id="repeatLoopStatus"></div>
                     </div>
-                    <div class="row">
-                        <div class="col-7">シャッフル</div>
+                    <div class="row mt-2 mb-1 px-2">
+                        <div class="col-7 px-0"><button type="button" id="shuffleButton"    class="btn btn-dark mx-auto px-3 px-sm-1 w-100" onclick="operation('shuffle');">シャッフル</button></div>
                         <div class="col-5" id="shuffleStatus"></div>
                     </div>
                     <div class="row justify-content-center my-3">
@@ -89,32 +83,38 @@
             </div>
             
             {# 情報表示エリア #}
-            <div class="col-lg-9 col-md-7 col-sm-6 col-12 mx-auto bg-light">
-                <h2 class="h2 text-center text-light bg-info mt-auto mb-3">情報</h2>
-                <div class="container-fluid">
+            <div class="col-lg-9 col-md-7 col-sm-6 col-12 mx-0 px-0 bg-light">
+                <div class="" style="height: 0px;"><h2 style="height: 0px;" class="h2 text-center text-light bg-info mt-auto mb-3">情報</h2></div>
+                <div class="container-fluid px-0 mx-0">
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>タイトル</p></div>
-                        <div class="col-flex"><p id="titleInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>タイトル</p></div>-->
+						<img src="/lampcontroller/public/songs.gif" class="col-2 col-sm-1 h-100" alt="タイトル">
+                        <div class="col-10 col-sm-11"><p id="titleInfo" class="h2"></p></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アーティスト</p></div>
-                        <div class="col-flex"><p id="artistInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>アーティスト</p></div>-->
+						<img src="/lampcontroller/public/artist.gif" class="col-2 col-sm-1 h-100" alt="アーティスト">
+                        <div class="col-10 col-sm-11"><p id="artistInfo" class="h2">></p></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アルバム</p></div>
-                        <div class="col-flex"><p id="albumInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>アルバム</p></div>-->
+						<img src="/lampcontroller/public/disc.gif" class="col-2 col-sm-1 h-100" alt="アルバム">
+                        <div class="col-10 col-sm-11"><p id="albumInfo" class="h2"></p></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>アルバムアーティスト</p></div>
-                        <div class="col-flex"><p id="albumArtistInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>アルバムアーティスト</p></div>-->
+						<img src="/lampcontroller/public/disc_artist.gif" class="col-2 col-sm-1 h-100" alt="アルバムアーティスト">
+                        <div class="col-10 col-sm-11"><p id="albumArtistInfo"></p></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>時間</p></div>
-                        <div class="col-flex"><p id="timeInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>時間</p></div>-->
+						<img src="/lampcontroller/public/time.gif" class="col-2 col-sm-1 h-100" alt="時間">
+                        <div class="col-10 col-sm-11"><p id="timeInfo" class="h2"></p></div>
                     </div>
                     <div class="row mb-1">
-                        <div class="col-flex mr-3"><p>場所</p></div>
-                        <div class="col-flex"><p id="pathInfo"></p></div>
+                        <!--<div class="col-flex mr-3"><p>場所</p></div>-->
+						<img src="/lampcontroller/public/place.gif" class="col-2 col-sm-1 h-100" alt="場所">
+                        <div class="col-10 col-sm-11"><p id="pathInfo" class="h2"></p></div>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,8 @@
             var softwareStatus = document.getElementById("softwareStatus");
             var repeatLoopStatus = document.getElementById("repeatLoopStatus");
             var shuffleStatus = document.getElementById("shuffleStatus");
-            
+			var playButtonImage = document.getElementById("playButtonImage");
+
             {# JSONを送ってJSONをもらう #}
             var reqJson = JSON.stringify({
                 "sessionId": "{{ session.id }}",
@@ -163,13 +164,17 @@
                     setText(pathInfo, jsonData.path);
                     setText(timeInfo, seconds2string(jsonData.playbackTime) + " / " + seconds2string(jsonData.length))
                     if (jsonData.status == "playing"){
-                        setText(softwareStatus, "再生中");
+                        setText(softwareStatus, "");
+						playButtonImage.src = "/lampcontroller/public/pause.gif";
                     } else if (jsonData.status == "paused"){
-                        setText(softwareStatus, "一時停止中");
-                    } else if (jsonData.status == "stopped"){
-                        setText(softwareStatus, "停止中");
-                    } else{
+                        setText(softwareStatus, "");
+						playButtonImage.src = "/lampcontroller/public/play.gif";
+                    } else if (jsonData.status == "stopped"){		
+                        setText(softwareStatus, "");
+						playButtonImage.src = "/lampcontroller/public/play.gif";
+                    } else{		// 未接続
                         setText(softwareStatus, "未接続");
+						playButtonImage.src = "/lampcontroller/public/play.gif";
                     }
                     if (jsonData.repeatLoop == "off"){
                         setText(repeatLoopStatus, "オフ");
