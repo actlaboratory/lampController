@@ -23,7 +23,7 @@ $app->post("/login", function (request $request, response $response){
     }
     
     // ログインが完了したらリダイレクト
-    return $response->withRedirect($request->getUri()->getBasePath()."/");
+    return $response->withRedirect($request->getUri()->getBasePath()."/ctrl");
 });
 
 // ログインフォームを表示
